@@ -37,7 +37,9 @@
 	</bean>
 	<!-- 配置映射的包 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.zhilv.notification.dao;"/>
+		<property name="basePackage" value="
+				com.zhilv.notification.dao;
+				com.zhilv.user.dao"/>
 	</bean>
 
 </beans>
