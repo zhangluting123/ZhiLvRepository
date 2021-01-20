@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import com.zhilv.entity.Attention;
 import com.zhilv.entity.User;
 import com.zhilv.user.service.UserService;
+import com.zhilv.util.DateUtil;
 
 /**   
  * @ClassName: UserController   
@@ -112,9 +113,7 @@ public class UserController {
 							user.setUserName(string);
 							break;
 						case "birth":
-							SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-							Date birth = format.parse(string);
-							user.setBirth(birth);
+							user.setBirth(DateUtil.getDate(string));
 							break;
 						case "signature":
 							user.setSignature(string);

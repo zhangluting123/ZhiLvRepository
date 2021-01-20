@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhilv.topic.dao.TopicMapper">
+	<resultMap type="com.zhilv.entity.Topic" id="topicMap">
+		<id property="topicId" column="topic_id"/>
+		<result property="title" column="topic_title"/>
+		<result property="userId" column="topic_user_id"/>
+	</resultMap>
+	
+	<!-- 添加发布版话题 -->
+	<insert id="addTopic">
+		insert into topic_detail
+		values(#{topic.topicId},#{topic.title},#{topic.userId})
+	</insert>
+	
+	<!-- 查询所有发布版话题 -->
+	<select id="findAllTopic" resultMap="topicMap">
+		select * from topic_detail order by topic_id desc
+	</select>
+	
+	<!-- 根据字符串查询指定话题 -->
+	<select id="findTopicByStr" resultMap="topicMap">
+		select * from topic_detail where topic_title like concat('%',#{str},'%')
+	</select>
+	
+	<!-- 查询使用次数最多的两个topic -->
+	<select id="findTwiceTopicUsed" resultMap="topicMap">
+		select distinct td.topic_id,topic_title,topic_user_id from topic_detail td right join(
+			select m.topic_id from(
+				select a.topic_id,(a.total+IFNULL(b.total,0)) idCount 
+				from(select topic_id,COUNT(topic_id) total from travels_detail group by topic_id
+				) a left join (select topic_id,COUNT(topic_id) total from video_detail group by topic_id
+				) b on a.topic_id=b.topic_id 
+				union 
+				select b.topic_id,(IFNULL(a.total,0)+b.total) idCount
+				from(select topic_id,COUNT(topic_id) total from travels_detail group by topic_id
+				) a right join (select topic_id,COUNT(topic_id) total from video_detail	group by topic_id
+				) b on a.topic_id=b.topic_id
+			) m order by m.idCount desc
+	   )n on td.topic_id=n.topic_id limit 2
+	</select>
+</mapper>
