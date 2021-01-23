@@ -38,6 +38,7 @@
 		select * from audit_topic where a_status=0 limit #{param1},#{param2}
 	</select>
 	
+	<!-- 查询数量 -->
 	<select id="findTopicCount" resultType="java.lang.Integer">
 		select count(*) from audit_topic where a_status=0
 	</select>

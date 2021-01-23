@@ -46,4 +46,12 @@ public interface TopicMapper {
 	 */
 	public List<Topic> findTwiceTopicUsed();
 	
+	/**
+	 * @Title: findTopicById
+	 * @Description: 根据ID值查询话题
+	 * @author: 张璐婷 
+	 * @date: 2021年1月20日 下午5:40:58
+	 */
+	public Topic findTopicById(@Param("topicId")Integer topicId);
+	
 }

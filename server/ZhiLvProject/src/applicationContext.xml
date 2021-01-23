@@ -38,8 +38,10 @@
 	<!-- 配置映射的包 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="
+				com.zhilv.audit.travels.dao;
 				com.zhilv.audit.topic.dao;
 				com.zhilv.topic.dao;
+				com.zhilv.travels.dao;
 				com.zhilv.notification.dao;
 				com.zhilv.user.dao"/>
 	</bean>

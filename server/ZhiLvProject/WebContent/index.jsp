@@ -15,9 +15,12 @@
 	<a href="http://localhost:8080/ZhiLvProject/notification/find?userId=1">通知消息userId=1</a>
 	<a href="http://localhost:8080/ZhiLvProject/notification/find?userId=2">通知消息userId=2</a>
 -->
-	<div class="topic">
+<fieldset>
+<h4>话题后台</h4>
+	<div class="audit_topic">
 		<table border="1" cellpadding="10">
 			<tr>
+			<td>change_status</td>
 			<td>audit_id</td>
 			<td>topic_id</td>
 			<td>topic_title</td>
@@ -25,32 +28,115 @@
 			<td>status</td>
 			<td>time</td>
 			</tr>
-			<c:forEach items="${page.list}" var="topic">
+			<c:forEach items="${topicPage.list}" var="topic">
 				<tr>
+				<td>
+					<a href="${ctx}/audit/topic/update?auditId=${topic.auditId }&status=1">通过</a><br>
+					<a href="${ctx}/audit/topic/update?auditId=${topic.auditId }&status=2">不通过</a>
+				</td>
 				<td>${topic.auditId}</td>
 				<td>${topic.topicId }</td>
 				<td>${topic.title }</td>
 				<td>${topic.userId}</td>
 				<td>${topic.status }</td>
-				<td><fmt:formatDate pattern="yyyy-MM-dd hh:mm:ss" value="${topic.time}"/></td>
+				<td><fmt:formatDate type="both" value="${topic.time}"/></td>
 				</tr>
 			</c:forEach>
 		</table>
 	</div>
 	<div id="custom-page"  style="text-align:center;float:right;">
-		<div>共 &nbsp;${page.totalCount }&nbsp;条数据 &nbsp;&nbsp;共 &nbsp;${page.totalPageNum }&nbsp;页  &nbsp; &nbsp; &nbsp;</div>
-		<div><a href="${ctx }/audit/topic/list/1/">首页</a> </div>
-		<div><a href="${ctx }/audit/topic/list/${page.prePageNum }" >上一页</a> </div>
-		<div><a href="${ctx }/audit/topic/list/${page.nextPageNum }" >下一页</a> </div>
-		<div><a href="${ctx }/audit/topic/list/${page.totalPageNum }">末页</a> </div>
+		<div>共 &nbsp;${topicPage.totalCount }&nbsp;条数据 &nbsp;&nbsp;共 &nbsp;${topicPage.totalPageNum }&nbsp;页  &nbsp; &nbsp; &nbsp;</div>
+		<div>
+			<a href="${ctx }/audit/topic/list/1/">首页</a> 
+			<a href="${ctx }/audit/topic/list/${topicPage.prePageNum }" >上一页</a> 
+			<a href="${ctx }/audit/topic/list/${topicPage.nextPageNum }" >下一页</a> 
+			<a href="${ctx }/audit/topic/list/${topicPage.totalPageNum }">末页</a> 
+		</div>
 	</div>
-	
 
-	<br>
-	<a href="${ctx}/audit/topic/update?auditId=1&status=1">重庆通过</a>
-	<a href="${ctx}/audit/topic/update?auditId=2&status=2">拉萨不通过</a>
 	<br>
 	<a href="${ctx}/topic/list">topic公开列表</a>
 	<a href="${ctx}/topic/like?str=重庆">字符串查询</a>
+</fieldset>
+	<!-- ======================================================= -->
+<fieldset>
+<h4>游记后台</h4>
+	<div class="audit_travels">
+		<table border="1" cellpadding="10">
+			<tr>
+			<td>change_status</td>
+			<td>audit_id</td>
+			<td>travels_img_list</td>
+			<td>a_travels_id</td>
+			<td style="color:green;">topic_title</td>
+			<td>a_travels_title</td>
+			<td>a_travels_route</td>
+			<td>a_travels_scene</td>
+			<td>a_travels_ticket</td>
+			<td>a_travels_hotel</td>
+			<td>a_travels_tips</td>
+			<td>a_travels_location</td>
+			<td>a_upload_time</td>
+			<td style="color:purple;">a_more_id</td>
+			<td style="color:purple;">a_more_destination</td>
+			<td style="color:purple;">a_more_traffic</td>
+			<td style="color:purple;">a_more_date</td>
+			<td style="color:purple;">a_days</td>
+			<td style="color:purple;">a_more_people</td>
+			<td style="color:purple;">a_more_money</td>
+			<td>a_user_id</td>
+			<td>status</td>
+			<td>time</td>
+			</tr>
+			<c:forEach items="${travelsPage.list}" var="ats">
+				<tr>
+				<td>
+					<a href="${ctx}/audit/travels/update?auditId=${ats.auditId }&status=1">通过</a><br>
+					<a href="${ctx}/audit/travels/update?auditId=${ats.auditId }&status=2">不通过</a>
+				</td>
+				
+				<td>${ats.auditId}</td>
+				<td>
+					<c:forEach items="${ats.imgList}" var="imgs">
+						<a href="${ctx}/${imgs.path}" target="_blank">图片链接${imgs.imgId }</a><br>
+					</c:forEach>
+				</td>
+				<td>${ats.travelsId }</td>
+				<td style="color:green;"># ${ats.topic.title } #</td>
+				<td>${ats.title }</td>
+				<td>${ats.route }</td>
+				<td>${ats.scene }</td>
+				<td>${ats.ticket}</td>
+				<td>${ats.hotel }</td>
+				<td>${ats.tips }</td>
+				<td>${ats.location }</td>
+				<td><fmt:formatDate type="both" value="${ats.uploadTime}"/></td>
+				<td style="color:purple;">${ats.detail.moreId}</td>
+				<td style="color:purple;">${ats.detail.destination}</td>
+				<td style="color:purple;">${ats.detail.traffic}</td>
+				<td style="color:purple;"><fmt:formatDate type="date" value="${ats.detail.beginDate}"/></td>
+				<td style="color:purple;">${ats.detail.days}</td>
+				<td style="color:purple;">${ats.detail.people}</td>
+				<td style="color:purple;">${ats.detail.money}</td>
+				<td>${ats.userId} </td>
+				<td>${ats.status }</td>
+				<td><fmt:formatDate type="both" value="${ats.lastTime}"/></td>
+				</tr>
+			</c:forEach>
+		</table>
+	</div>
+	<div id="custom-page"  style="text-align:center;float:right;">
+		<div>共 &nbsp;${travelsPage.totalCount }&nbsp;条数据 &nbsp;&nbsp;共 &nbsp;${travelsPage.totalPageNum }&nbsp;页  &nbsp; &nbsp; &nbsp;</div>
+		<div>
+			<a href="${ctx }/audit/topic/list/1/">首页</a> 
+			<a href="${ctx }/audit/topic/list/${travelsPage.prePageNum }" >上一页</a> 
+			<a href="${ctx }/audit/topic/list/${travelsPage.nextPageNum }" >下一页</a> 
+			<a href="${ctx }/audit/topic/list/${travelsPage.totalPageNum }">末页</a> 
+		</div>
+	</div>
+	<br>
+	
+	<a href="${ctx}/travels/list">Travels列表</a>
+</fieldset>
 </body>
 </html>

@@ -39,4 +39,9 @@
 			) m order by m.idCount desc
 	   )n on td.topic_id=n.topic_id limit 2
 	</select>
+	
+	<!--根据ID值查询话题   -->
+	<select id="findTopicById" resultMap="topicMap">
+		select * from topic_detail where topic_id=#{topicId}
+	</select>
 </mapper>

@@ -12,6 +12,14 @@
 		<result property="birth" column="user_birth"/>
 		<result property="signature" column="user_signature"/>
 	</resultMap>
+	<resultMap type="com.zhilv.entity.User" id="userMap2">
+		<id property="userId" column="user_id"/>
+		<result property="userHead" column="user_head"/>
+		<result property="userName" column="user_name"/>
+		<result property="sex" column="user_sex"/>
+		<result property="birth" column="user_birth"/>
+		<result property="signature" column="user_signature"/>
+	</resultMap>
 	
 	<!-- 用户登录 -->
 	<select id="findUserByPhoneAndEmail" resultMap="userMap">
@@ -44,7 +52,7 @@
 	</update>	
 	
 	<!-- 根据ID值查询用户信息 -->
-	<select id="findUserByUserId" resultMap="userMap">
+	<select id="findUserByUserId" resultMap="userMap2">
 		select * from user_detail where user_id=#{userId}
 	</select>
 	

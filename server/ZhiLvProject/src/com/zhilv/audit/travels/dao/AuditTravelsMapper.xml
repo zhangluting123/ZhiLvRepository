@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhilv.audit.travels.dao.AuditTravelsMapper">
+	<resultMap type="com.zhilv.entity.AuditTravels" id="atMap">
+		<id property="auditId" column="a_id"/>
+		<result property="travelsId" column="a_travels_id"/>
+		<result property="title" column="a_travels_title"/>
+		<result property="route" column="a_travels_route"/>
+		<result property="scene" column="a_travels_scene"/>
+		<result property="ticket" column="a_travels_ticket"/>
+		<result property="hotel" column="a_travels_hotel"/>
+		<result property="tips" column="a_travels_tips"/>
+		<result property="location" column="a_travels_location"/>
+		<result property="uploadTime" column="a_upload_time"/>
+		<result property="userId" column="a_user_id"/>
+		<result property="lastTime" column="a_last_time"/>
+		<result property="status" column="a_status"/>
+		<association property="topic" column="{topicId=a_topic_id}"
+			select="com.zhilv.topic.dao.TopicMapper.findTopicById"/>
+		<association property="detail">
+			<id property="moreId" column="a_more_id"/>
+			<result property="destination" column="a_more_destination"/>
+			<result property="traffic" column="a_more_traffic"/>
+			<result property="beginDate" column="a_more_date"/>
+			<result property="days" column="a_days"/>
+			<result property="people" column="a_more_people"/>
+			<result property="money" column="a_more_money"/>
+			<result property="travelsId" column="a_id_travels"/>
+			<result property="videoId" column="a_id_video"/>
+		</association>
+		<collection property="imgList" ofType="com.zhilv.entity.Img">
+			<id property="imgId" column="a_img_id"/>
+			<result property="path" column="a_path"/>
+			<result property="travelsId" column="img_a_id"/>
+		</collection>
+	</resultMap>
+	
+	<!--  添加审核版游记 -->
+	<insert id="addAuditTravels" useGeneratedKeys="true" keyProperty="auditId">
+		insert into audit_travels(a_travels_id,a_travels_title,a_travels_route,a_travels_scene,a_travels_ticket,a_travels_hotel,
+		a_travels_tips,a_topic_id,a_travels_location,a_upload_time,a_more_id,a_user_id)
+		values(#{audit.travelsId},#{audit.title},#{audit.route},#{audit.scene},#{audit.ticket},#{audit.hotel},#{audit.tips},
+		#{audit.topic.topicId},#{audit.location},#{audit.uploadTime},#{audit.detail.moreId},#{audit.userId})
+	</insert>
+	
+	<!-- 添加新增游记的图片 -->
+	<insert id="addTravelsImg" useGeneratedKeys="true" keyProperty="imgId">
+		insert into
+		audit_img(a_img_id,a_path,img_a_id) 
+		values
+		<foreach collection="imgs" item="img" separator=",">
+			(#{img.imgId},#{img.path},#{img.travelsId})
+		</foreach>
+	</insert>
+	
+	<!-- 添加详情信息  -->
+	<insert id="addTravelsDetail" useGeneratedKeys="true" keyProperty="moreId">
+		insert into audit_more_detail(a_more_destination,a_more_traffic,a_more_date,a_days,a_more_people,a_more_money)
+		values(#{detail.destination},#{detail.traffic},#{detail.beginDate},#{detail.days},#{detail.people},#{detail.money}) 
+	</insert>
+	
+	<!-- 更新连接a_id_travels -->
+	<update id="updateDetailTravelsIdById">
+		update audit_more_detail set a_id_travels=#{idTravels} where a_more_id=#{moreId} 
+	</update>
+	
+	<!-- 更新审核状态 -->
+	<update id="updateTravelsStatus">
+		update audit_travels 
+		set a_status=#{status},a_last_time=#{time}
+		where a_id=#{auditId}
+	</update>
+	
+	<!-- 根据ID查找 审核版游记-->
+	<select id="findAuditTravelsById" resultMap="atMap">
+		select * from audit_travels au
+		left join audit_more_detail m on au.a_id=m.a_id_travels
+		left join audit_img i on au.a_id=i.img_a_id
+		where au.a_id=#{auditId}
+	</select>
+		
+	<!-- 查找所有未审核的游记  -->
+	<select id="findAllNotTravelsTopic" resultMap="atMap">
+		select * from audit_travels au
+		left join audit_more_detail m on au.a_id=m.a_id_travels
+		left join audit_img i on au.a_id=i.img_a_id
+		where au.a_status=0
+	</select>
+	
+	<!-- 分页查询 -->
+	<select id="findForPage" resultMap="atMap">
+		select * from audit_travels au
+		left join audit_more_detail m on au.a_id=m.a_id_travels
+		left join audit_img i on au.a_id=i.img_a_id
+		where au.a_status=0 limit #{param1},#{param2}
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="findTravelsCount" resultType="java.lang.Integer">
+		select count(*) from audit_travels where a_status=0
+	</select>
+	
+</mapper>

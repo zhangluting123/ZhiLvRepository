@@ -13,7 +13,8 @@
 	<a href="${ctx}/audit/topic/add?title=拉萨之行&userId=4">拉萨之行</a>
 	<a href="${ctx}/audit/topic/add?title=成都之行&userId=4">成都之行</a>
 	<a href="${ctx}/audit/topic/add?title=西藏之行&userId=4">西藏之行</a>
-
 	<a href="${ctx}/audit/topic/list/1">AuditTopic列表</a>
+	<br>
+	<a href="${ctx}/audit/travels/list/1">AuditTravels列表</a>
 </body>
 </html>

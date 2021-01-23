@@ -17,6 +17,7 @@ import com.zhilv.entity.AuditTopic;
 import com.zhilv.entity.Topic;
 import com.zhilv.topic.service.TopicService;
 import com.zhilv.util.DateUtil;
+import com.zhilv.util.FinalUtil;
 import com.zhilv.util.Page;
 
 /**   
@@ -37,11 +38,11 @@ public class AuditTopicController {
 	
 	@RequestMapping(value="/list/{pageNum}",method=RequestMethod.GET)
 	public String list(@PathVariable(value="pageNum",required=true)int pageNum, Model model) {
-		List<AuditTopic> list = auditTopicService.findForPage((pageNum-1)*3, 3);
+		List<AuditTopic> list = auditTopicService.findForPage((pageNum-1)*FinalUtil.PAGE_SIZE,FinalUtil.PAGE_SIZE);
 		Page<AuditTopic> page = new Page<>(pageNum,3);
 		page.setList(list);
 		page.setTotalCount(auditTopicService.findTopicCount());
-		model.addAttribute("page",page);
+		model.addAttribute("topicPage",page);
 		return "index";
 	}
 	
