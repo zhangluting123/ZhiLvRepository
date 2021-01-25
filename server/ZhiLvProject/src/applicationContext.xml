@@ -33,17 +33,15 @@
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"></property>
 		<property name="configLocation" value="classpath:mybatis.xml"></property>
-		<property name="mapperLocations" value="classpath:com/zhilv/*/dao/*Mapper.xml"></property>
+		<property name="mapperLocations">
+			<array>
+				<value>classpath:com/zhilv/*/*/dao/*Mapper.xml</value>
+				<value>classpath:com/zhilv/*/dao/*Mapper.xml</value>
+			</array>
+		</property>
 	</bean>
 	<!-- 配置映射的包 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="
-				com.zhilv.audit.travels.dao;
-				com.zhilv.audit.topic.dao;
-				com.zhilv.topic.dao;
-				com.zhilv.travels.dao;
-				com.zhilv.notification.dao;
-				com.zhilv.user.dao"/>
+		<property name="basePackage" value="com.zhilv.*.*.dao;com.zhilv.*.dao"/>
 	</bean>
-
 </beans>
