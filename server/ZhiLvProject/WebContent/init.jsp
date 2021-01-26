@@ -16,5 +16,7 @@
 	<a href="${ctx}/audit/topic/list/1">AuditTopic列表</a>
 	<br>
 	<a href="${ctx}/audit/travels/list/1">AuditTravels列表</a>
+	<br>
+	<a href="${ctx}/audit/video/list/1">AuditVideo列表</a>
 </body>
 </html>

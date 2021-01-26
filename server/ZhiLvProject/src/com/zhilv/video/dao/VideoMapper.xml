@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhilv.video.dao.VideoMapper">
+	<resultMap type="com.zhilv.entity.Video" id="videoMap">
+		<id property="videoId" column="video_id"/>
+		<result property="path" column="video_path"/>
+		<result property="img" column="video_img"/>
+		<result property="title" column="video_title"/>
+		<result property="content" column="video_content"/>
+		<result property="location" column="video_location"/>
+		<result property="duration" column="video_duration"/>
+		<result property="size" column="video_size"/>
+		<result property="uploadTime" column="video_upload_time"/>
+		<association property="topic" column="{topicId=topic_id}"
+			select="com.zhilv.topic.dao.TopicMapper.findTopicById"/>
+		<association property="detail">
+			<id property="moreId" column="more_id"/>
+			<result property="destination" column="more_destination"/>
+			<result property="traffic" column="more_traffic"/>
+			<result property="beginDate" column="more_begin_date"/>
+			<result property="days" column="more_days"/>
+			<result property="people" column="more_people"/>
+			<result property="money" column="more_money"/>
+			<result property="travelsId" column="travels_id"/>
+			<result property="videoId" column="video_id"/>
+		</association>
+		<association property="user" column="{userId=user_id}"
+			select="com.zhilv.user.dao.UserMapper.findUserByUserId">
+		</association>
+	</resultMap>
+	
+	<!-- 添加发布版视频 -->
+	<insert id="addVideo" useGeneratedKeys="true" keyProperty="videoId">
+		insert into video_detail
+		values(#{video.videoId},#{video.path},#{video.img},#{video.title},#{video.content},#{video.topic.topicId},#{video.location},#{video.duration},#{video.size},#{video.uploadTime},
+		#{video.detail.moreId},#{video.user.userId})
+	</insert>
+	
+	<!-- 添加详细信息 -->
+	<insert id="addVideoDetail" useGeneratedKeys="true" keyProperty="moreId">
+		insert into more_detail(more_destination,more_traffic,more_begin_date,more_days,more_people,more_money)
+		values(#{detail.destination},#{detail.traffic},#{detail.beginDate},#{detail.days},#{detail.people},#{detail.money}) 
+	</insert>
+	
+	<!-- 更新more_detail连接video_id -->
+	<update id="updateDetailVideoIdById">
+		update more_detail set video_id=#{videoId} where more_id=#{moreId} 
+	</update>
+	
+	<!-- 查询所有发布版视频 -->
+	<select id="findAllVideo" resultMap="videoMap">
+		select * from video_detail v
+		left join more_detail m on v.video_id=m.video_id
+	</select>
+	
+	<!-- 根据字符串模糊查询相应video -->
+	<select id="findVideoByStr" resultMap="videoMap">
+		select * from video_detail v
+		left join more_detail m on v.video_id=m.video_id
+		where m.destination like concat('%',#{str},'%')
+	</select>
+	
+	<!-- 根据ID查询视频 -->
+	<select id="findVideoById" resultMap="videoMap">
+		select * from video_detail v
+		left join more_detail m on v.video_id=m.video_id
+		where v.video_id=#{video_id}
+	</select>
+	
+	<!-- 根据ID删除视频 -->
+	<delete id="deleteVideoById">
+		delete from video_detail where video_id=#{videoId}
+	</delete>
+	
+	<!-- 根据ID删除详细信息 -->
+	<delete id="deleteDetailByVideoId">
+		delete from more_detail where video_id=#{videoId}
+	</delete>
+	
+	<!-- 更新视频 -->
+	<update id="updateVideoById">
+		update video_detail 
+		<set>
+			<if test="null != video.title and !video.title.equals('')">
+				video_title=#{video.title},
+			</if>
+			<if test="null != video.content and !video.content.equals('')">
+				video_content=#{video.content},
+			</if>
+			<if test="null != video.path and !video.path.equals('')">
+				video_path=#{video.path},
+			</if>
+			<if test="null != video.img and !video.img.equals('')">
+				video_img=#{video.img},
+			</if>
+			<if test="null != video.duration ">
+				video_duration=#{video.duration},
+			</if>
+			<if test="null != video.size and !video.size.equals('')">
+				video_size=#{video.size},
+			</if>
+			<if test="null != video.topic.topicId">
+				topic_id=#{video.topic.topicId},
+			</if>
+		</set>
+		where video_id=#{video.videoId}
+	</update>
+	
+	
+	<!-- 更新详情 -->
+	<update id="updateVideoDetail">
+		update more_detail 
+		<set>
+			<if test="null != detail.destination and !detail.destination.equals('')">
+				more_destination=#{detail.destination},
+			</if>
+			<if test="null != detail.traffic and !detail.traffic.equals('')">
+				more_traffic=#{detail.traffic},
+			</if>
+			<if test="null != detail.beginDate">
+				more_begin_date=#{detail.beginDate},
+			</if>
+			<if test="null != detail.days">
+				more_days=#{detail.days},
+			</if>
+			<if test="null != detail.people and !detail.people.equals('')">
+				more_people=#{detail.people},
+			</if>
+			<if test="null != detail.money">
+				more_money=#{detail.money},
+			</if>
+		</set>
+		where video_id=#{detail.videoId}
+	</update>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

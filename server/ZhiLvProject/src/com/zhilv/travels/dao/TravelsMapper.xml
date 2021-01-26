@@ -160,6 +160,16 @@
 	<delete id="deleteTravelsById">
 		delete from travels_detail where travels_id=#{travelsId}
 	</delete>
+	
+	<!-- 根据ID删除详细信息 -->
+	<delete id="deleteDetailByTravelsId">
+		delete from more_detail where travels_id=#{travelsId}
+	</delete>
+	
+	<!-- 根据ID删除详细图片 -->
+	<delete id="deleteImgByTravelsId">
+		delete from travels_img where img_travels_id=#{travelsId}
+	</delete>
 </mapper>
 
 

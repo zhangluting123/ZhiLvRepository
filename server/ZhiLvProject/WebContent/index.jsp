@@ -135,8 +135,80 @@
 		</div>
 	</div>
 	<br>
+</fieldset>
+
+	<!-- ======================================================= -->
+<fieldset>
+<h4>视频后台</h4>
+	<div class="audit_video">
+		<table border="1" cellpadding="10">
+			<tr>
+			<td>change_status</td>
+			<td>audit_id</td>
+			<td>a_video_id</td>
+			<td>a_video_path</td>
+			<td>a_video_img</td>
+			<td>a_video_title</td>
+			<td>a_video_content</td>
+			<td style="color:green;">topic_title</td>		
+			<td>a_video_location</td>
+			<td>a_video_duration</td>
+			<td>a_video_size</td>
+			<td>a_upload_time</td>
+			<td style="color:purple;">a_more_id</td>
+			<td style="color:purple;">a_more_destination</td>
+			<td style="color:purple;">a_more_traffic</td>
+			<td style="color:purple;">a_more_date</td>
+			<td style="color:purple;">a_days</td>
+			<td style="color:purple;">a_more_people</td>
+			<td style="color:purple;">a_more_money</td>
+			<td>a_user_id</td>
+			<td>status</td>
+			<td>time</td>
+			</tr>
+			<c:forEach items="${videoPage.list}" var="video">
+				<tr>
+				<td>
+					<a href="${ctx}/audit/video/update?auditId=${video.auditId }&status=1">通过</a><br>
+					<a href="${ctx}/audit/video/update?auditId=${video.auditId }&status=2">不通过</a>
+				</td>				
+				<td>${video.auditId}</td>
+				<td>${video.videoId }</td>
+				<td><a href="${ctx}/${video.path }" target="_blank">视频链接</a><br></td>
+				<td><a href="${ctx}/${video.img }" target="_blank">缩略图链接</a><br></td>
+				<td>${video.title }</td>
+				<td>${video.content }</td>
+				<td style="color:green;"># ${video.topic.title } #</td>
+				<td>${video.location }</td>
+				<td>${video.duration }</td>
+				<td>${video.size }</td>
+				<td><fmt:formatDate type="both" value="${video.uploadTime}"/></td>
+				<td style="color:purple;">${video.detail.moreId}</td>
+				<td style="color:purple;">${video.detail.destination}</td>
+				<td style="color:purple;">${video.detail.traffic}</td>
+				<td style="color:purple;"><fmt:formatDate type="date" value="${video.detail.beginDate}"/></td>
+				<td style="color:purple;">${video.detail.days}</td>
+				<td style="color:purple;">${video.detail.people}</td>
+				<td style="color:purple;">${video.detail.money}</td>
+				<td>${video.userId} </td>
+				<td>${video.status }</td>
+				<td><fmt:formatDate type="both" value="${video.lastTime}"/></td>
+				</tr>
+			</c:forEach>
+		</table>
+	</div>
+	<div id="custom-page"  style="text-align:center;float:right;">
+		<div>共 &nbsp;${videoPage.totalCount }&nbsp;条数据 &nbsp;&nbsp;共 &nbsp;${videoPage.totalPageNum }&nbsp;页  &nbsp; &nbsp; &nbsp;</div>
+		<div>
+			<a href="${ctx }/audit/video/list/1/">首页</a> 
+			<a href="${ctx }/audit/video/list/${videoPage.prePageNum }" >上一页</a> 
+			<a href="${ctx }/audit/video/list/${videoPage.nextPageNum }" >下一页</a> 
+			<a href="${ctx }/audit/video/list/${videoPage.totalPageNum }">末页</a> 
+		</div>
+	</div>
+	<br>
 	
-	<a href="${ctx}/travels/list">Travels列表</a>
+	<a href="${ctx}/note/list">Note列表</a>
 </fieldset>
 </body>
 </html>

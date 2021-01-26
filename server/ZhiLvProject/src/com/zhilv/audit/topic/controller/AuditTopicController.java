@@ -39,7 +39,7 @@ public class AuditTopicController {
 	@RequestMapping(value="/list/{pageNum}",method=RequestMethod.GET)
 	public String list(@PathVariable(value="pageNum",required=true)int pageNum, Model model) {
 		List<AuditTopic> list = auditTopicService.findForPage((pageNum-1)*FinalUtil.PAGE_SIZE,FinalUtil.PAGE_SIZE);
-		Page<AuditTopic> page = new Page<>(pageNum,3);
+		Page<AuditTopic> page = new Page<>(pageNum,FinalUtil.PAGE_SIZE);
 		page.setList(list);
 		page.setTotalCount(auditTopicService.findTopicCount());
 		model.addAttribute("topicPage",page);

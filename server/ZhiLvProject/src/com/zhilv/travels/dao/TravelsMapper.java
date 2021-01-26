@@ -112,5 +112,21 @@ public interface TravelsMapper {
 	 * @date: 2021年1月22日 下午6:16:45
 	 */
 	public int deleteTravelsById(@Param("travelsId")Integer travelsId);
+	
+	/**
+	 * @Title: deleteDetailByTravelsId
+	 * @Description: 删除详细信息
+	 * @author: 张璐婷 
+	 * @date: 2021年1月26日 上午11:37:16
+	 */
+	public int deleteDetailByTravelsId(@Param("travelsId")Integer travelsId);
+	
+	/**
+	 * @Title: deleteImgByTravelsId
+	 * @Description: 删除图片
+	 * @author: 张璐婷 
+	 * @date: 2021年1月26日 上午11:37:12
+	 */
+	public int deleteImgByTravelsId(@Param("travelsId")Integer travelsId);
 }
 

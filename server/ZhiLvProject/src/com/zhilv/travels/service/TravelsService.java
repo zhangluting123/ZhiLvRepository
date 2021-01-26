@@ -143,4 +143,24 @@ public class TravelsService {
 	public int deleteTravelsById(Integer travelsId) {
 		return travelsMapper.deleteTravelsById(travelsId);
 	}
+	
+	/**
+	 * @Title: deleteDetailByTravelsId
+	 * @Description: 删除详细信息
+	 * @author: 张璐婷 
+	 * @date: 2021年1月26日 上午11:37:16
+	 */
+	public int deleteDetailByTravelsId(Integer travelsId) {
+		return travelsMapper.deleteDetailByTravelsId(travelsId);
+	}
+	
+	/**
+	 * @Title: deleteImgByTravelsId
+	 * @Description: 删除图片
+	 * @author: 张璐婷 
+	 * @date: 2021年1月26日 上午11:37:12
+	 */
+	public int deleteImgByTravelsId(Integer travelsId) {
+		return travelsMapper.deleteImgByTravelsId(travelsId);
+	}
 }

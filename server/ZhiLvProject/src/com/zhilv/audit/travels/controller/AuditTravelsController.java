@@ -53,14 +53,14 @@ public class AuditTravelsController {
 	@RequestMapping(value="/list/{pageNum}",method=RequestMethod.GET)
 	public String list(@PathVariable(value="pageNum",required=true)int pageNum, Model model) {
 		List<AuditTravels> list = auditTravelsService.findForPage((pageNum-1)*FinalUtil.PAGE_SIZE, FinalUtil.PAGE_SIZE);
-		Page<AuditTravels> page = new Page<>(pageNum,3);
+		Page<AuditTravels> page = new Page<>(pageNum,FinalUtil.PAGE_SIZE);
 		page.setList(list);
 		page.setTotalCount(auditTravelsService.findTravelsCount());
 		model.addAttribute("travelsPage",page);
 		return "index";
 	}
 	
-	/**
+	/*
 	 * @Title: add
 	 * @Description:
 	 * @先插入detail获取moreId
@@ -253,7 +253,7 @@ public class AuditTravelsController {
 					}
 					System.out.println("j="+j);
 					if(j > 0) {
-						str = "OK";
+						str = "redirect:list/1";
 						System.out.println("发布版游记编辑成功");
 					}else {
 						str = "ERROR";
