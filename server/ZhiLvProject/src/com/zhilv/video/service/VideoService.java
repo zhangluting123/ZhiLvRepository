@@ -80,7 +80,7 @@ public class VideoService {
 	 * @author: 张璐婷 
 	 * @date: 2021年1月20日 下午5:40:58
 	 */
-	public Travels findVideoById(Integer videoId) {
+	public Video findVideoById(Integer videoId) {
 		return videoMapper.findVideoById(videoId);
 	}
 	

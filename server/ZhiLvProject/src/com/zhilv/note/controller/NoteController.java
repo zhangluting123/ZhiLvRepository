@@ -1,4 +1,4 @@
-package com.zhilv.notel.controller;
+package com.zhilv.note.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sun.java_cup.internal.runtime.virtual_parse_stack;
 import com.zhilv.entity.Note;
 import com.zhilv.entity.Travels;
@@ -57,7 +58,7 @@ public class NoteController {
 		SortUtil.sortList(noteList, "time", "DESC");
 		
 		if(noteList.size() > 0) {
-			Gson gson = new Gson();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 			String str = gson.toJson(noteList);
 			return str;
 		}else {

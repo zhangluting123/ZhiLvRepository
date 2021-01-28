@@ -64,7 +64,7 @@
 	<select id="findVideoById" resultMap="videoMap">
 		select * from video_detail v
 		left join more_detail m on v.video_id=m.video_id
-		where v.video_id=#{video_id}
+		where v.video_id=#{videoId}
 	</select>
 	
 	<!-- 根据ID删除视频 -->

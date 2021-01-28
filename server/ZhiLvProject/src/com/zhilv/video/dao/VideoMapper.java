@@ -63,7 +63,7 @@ public interface VideoMapper {
 	 * @author: 张璐婷 
 	 * @date: 2021年1月20日 下午5:40:58
 	 */
-	public Travels findVideoById(@Param("videoId")Integer videoId);
+	public Video findVideoById(@Param("videoId")Integer videoId);
 	
 	/**
 	 * @Title: deleteVideoById

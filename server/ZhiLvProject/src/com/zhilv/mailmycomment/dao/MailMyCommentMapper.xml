@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhilv.mailmycomment.dao.MailMyCommentMapper">
+	<resultMap type="com.zhilv.entity.MailMyComment" id="mailMap">
+		<id property="id" column="mycomment_id"/>
+		<result property="crFlag" column="cr_flag"/>
+		<result property="readFlag" column="read_flag"/> 
+		<association property="user" column="{userId=user_id}"
+			select="com.zhilv.user.dao.UserMapper.findUserByUserId">
+		</association>
+		<association property="comment" column="{commentId=comment_id}"
+			select="com.zhilv.comment.dao.CommentMapper.findCommentById">
+		</association>
+		<association property="replyComment" column="{replyId=reply_id}"
+			select="com.zhilv.replycomment.dao.ReplyCommentMapper.queryReplyCommentById1">
+		</association>
+	</resultMap>
+	
+	<!-- 插入评论消息 -->
+	<insert id="insertMailMyComment">
+		insert into mail_mycomment(user_id,
+		<if test="crflag == 'C'">
+			comment_id,cr_flag)values(#{userId},#{commentId},#{crflag})
+		</if>
+		<if test="crflag == 'R'">
+			reply_id,cr_flag)values(#{userId},#{replyId},#{crflag})
+		</if>
+	</insert>
+	
+	<select id="queryMailMyComment" resultMap="mailMap">
+		select * from mail_mycomment where user_id = #{userId} order by mycomment_id desc
+	</select>
+	
+	<!-- 设置信息为已读 -->
+	<update id="updateReadMsg">
+		update mail_mycomment 
+		set read_flag = 1
+		where mycomment_id = #{myCommentId}
+	</update>
+	
+	<delete id="deleteMailMyComment">
+		delete from mail_mycomment where mycomment_id = #{myCommentId}
+	</delete>
+</mapper>

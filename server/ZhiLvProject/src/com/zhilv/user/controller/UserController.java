@@ -146,7 +146,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/followList", method=RequestMethod.GET, produces="application/json;charset=utf-8")
-	public String followList(@RequestParam("userId")String userId) {
+	public String followList(@RequestParam("userId")Integer userId) {
 		String string = null;
 		List<User> list = userService.findFollowed(userId);
 		if(list.size() > 0) {
@@ -158,7 +158,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/fansList", method=RequestMethod.GET, produces="application/json;charset=utf-8")
-	public String fansList(@RequestParam("userId")String userId) {
+	public String fansList(@RequestParam("userId")Integer userId) {
 		String string = null;
 		List<User> list = userService.findFans(userId);
 		if(list.size() > 0) {
@@ -185,10 +185,10 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/follow", method=RequestMethod.GET, produces="application/json;charset=utf-8")
-	public String follow(@RequestParam("mineId")String mineId,@RequestParam("otherId")String otherId) {
+	public String follow(@RequestParam("mineId")Integer mineId,@RequestParam("otherId")Integer otherId) {
 		Attention attention = new Attention();
-		attention.setMineId(Integer.parseInt(mineId));
-		attention.setOtherId(Integer.parseInt(otherId));
+		attention.setMineId(mineId);
+		attention.setOtherId(otherId);
 		if(userService.addAttention(attention) > 0) {
 			System.out.println("关注成功");
 			return "OK";
@@ -199,10 +199,10 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/noFollow", method=RequestMethod.GET, produces="application/json;charset=utf-8")
-	public String noFollow(@RequestParam("mineId")String mineId,@RequestParam("otherId")String otherId) {
+	public String noFollow(@RequestParam("mineId")Integer mineId,@RequestParam("otherId")Integer otherId) {
 		Attention attention = new Attention();
-		attention.setMineId(Integer.parseInt(mineId));
-		attention.setOtherId(Integer.parseInt(otherId));
+		attention.setMineId((mineId));
+		attention.setOtherId(otherId);
 		if(userService.deleteAttention(attention) > 0) {
 			System.out.println("取关成功");
 			return "OK";

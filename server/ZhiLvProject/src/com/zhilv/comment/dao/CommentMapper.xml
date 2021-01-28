@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhilv.comment.dao.CommentMapper">
+	<resultMap type="com.zhilv.entity.Comment" id="commentMap1">
+		<id property="id" column="comment_id"/>
+		<result property="content" column="comment_content"/>
+		<result property="time" column="comment_time"/>
+		<association property="user" column="{userId=comment_user_id}"
+			select="com.zhilv.user.dao.UserMapper.findUserByUserId"/>
+	</resultMap>
+	<!-- 消息通知时使用 -->
+	<resultMap type="com.zhilv.entity.Comment" id="commentMap2">
+		<id property="id" column="comment_id"/>
+		<result property="content" column="comment_content"/>
+		<result property="time" column="comment_time"/>
+		<association property="user" column="{userId=comment_user_id}"
+			select="com.zhilv.user.dao.UserMapper.findUserByUserId"/>
+		<association property="travels" column="{travelsId=travels_id}"
+			select="com.zhilv.travels.dao.TravelsMapper.findTravelsById"/>
+		<association property="video" column="{videoId=video_id}"
+			select="com.zhilv.video.dao.VideoMapper.findVideoById"/>
+	</resultMap>
+	
+	<!-- 查询某条note的所有评论 -->
+	<select id="findCommentByNoteId" resultMap="commentMap1">
+		select * from comment_detail 
+		<if test="null != travelsId">
+			where travels_id=#{travelsId}
+		</if>
+		<if test="null != videoId">
+			where video_id=#{videoId}
+		</if>
+	</select>
+	<!-- 新增评论 -->
+	<insert id="addComment" useGeneratedKeys="true" keyProperty="id">
+		insert into comment_detail(comment_user_id,comment_content,comment_time,
+		<if test="null != comment.travels.travelsId">
+			travels_id
+		</if>
+		<if test="null != comment.video.videoId">
+			video_id
+		</if>
+		)values (#{comment.user.userId},#{comment.content},#{comment.time},
+		<if test="null != comment.travels.travelsId">
+			#{comment.travels.travelsId}
+		</if>
+		<if test="null != comment.video.videoId">
+			#{comment.video.videoId}
+		</if>
+		)
+	</insert>
+	
+	<!-- 查找某一条评论 -->
+	<select id="findCommentById" resultMap="commentMap2">
+		select * from comment_detail where comment_id=#{commentId}
+	</select>
+	
+</mapper>

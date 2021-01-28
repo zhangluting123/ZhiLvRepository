@@ -47,7 +47,7 @@ public class UserService {
 	 * @author: 张璐婷 
 	 * @date: 2021年1月18日 上午10:27:35
 	 */
-	public User findUserByUserId(String userId) {
+	public User findUserByUserId(Integer userId) {
 		return userMapper.findUserByUserId(userId);
 	}
 	
@@ -77,7 +77,7 @@ public class UserService {
 	 * @author: 张璐婷 
 	 * @date: 2021年1月17日 下午3:44:19
 	 */
-	public List<User> findFollowed(String userId){
+	public List<User> findFollowed(Integer userId){
 		return userMapper.findFollowed(userId);
 	}
 	
@@ -87,7 +87,7 @@ public class UserService {
 	 * @author: 张璐婷 
 	 * @date: 2021年1月18日 上午10:20:14
 	 */
-	public List<User> findFans(String userId){
+	public List<User> findFans(Integer userId){
 		return userMapper.findFans(userId);
 	}
 	

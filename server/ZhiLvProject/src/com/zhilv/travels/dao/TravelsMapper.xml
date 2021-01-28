@@ -153,7 +153,7 @@
 		select * from travels_detail t
 		left join more_detail m on t.travels_id=m.travels_id
 		left join travels_img ti on t.travels_id=ti.img_travels_id
-		where t.travels_id=#{travels_id}
+		where t.travels_id=#{travelsId}
 	</select>
 	
 	<!-- 根据ID删除游记 -->
