@@ -11,8 +11,6 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.ibatis.annotations.Case;
-import org.springframework.context.annotation.EnableLoadTimeWeaving;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,8 +30,6 @@ import com.zhilv.travels.service.TravelsService;
 import com.zhilv.util.DateUtil;
 import com.zhilv.util.FinalUtil;
 import com.zhilv.util.Page;
-
-import sun.awt.image.ImagingLib;
 
 /**   
  * @ClassName: AuditTravelsController   
