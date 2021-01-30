@@ -44,5 +44,20 @@
 	<a href="${ctx }/mailmycomment/update?myCommentId=5">更新通知状态</a>
 	<a href="${ctx }/mailmycomment/delete?myCommentId=6">删除通知</a>
 	-->
+	
+	<!-- 
+	<a href="${ctx }/good/add?userId=4&travelsId=9">添加travels点赞</a>
+	<a href="${ctx }/good/add?userId=4&videoId=10">添加video点赞</a>
+	<a href="${ctx }/good/ifGood?userId=4&videoId=10">是否点赞</a>
+	<a href="${ctx }/good/delete?userId=4&travelsId=9">删除travels点赞</a>
+	<a href="${ctx }/note/goodlist?userId=4">查询点赞列表</a>
+	
+	<br>
+	<a href="${ctx }/collection/add?userId=4&videoId=10">添加video收藏</a>
+	<a href="${ctx }/collection/add?userId=4&travelsId=9">添加travels收藏</a>
+	<a href="${ctx }/collection/ifCollect?userId=4&videoId=10">是否收藏</a>
+	<a href="${ctx }/collection/delete?userId=4&travelsId=9">删除travels收藏</a>
+	<a href="${ctx }/note/collectionlist?userId=4">查询收藏列表</a>
+	-->
 </body>
 </html>

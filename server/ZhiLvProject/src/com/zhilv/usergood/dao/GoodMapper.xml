@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhilv.usergood.dao.GoodMapper">
+	<resultMap type="com.zhilv.entity.UserGood" id="goodMap">
+		<id property="id" column="good_id"/>
+		<result property="time" column="good_time"/>
+		<association property="user" column="{userId=user_id}"
+			select="com.zhilv.user.dao.UserMapper.findUserByUserId">
+		</association>
+		<association property="travels" column="{travelsId=travels_id}"
+			select="com.zhilv.travels.dao.TravelsMapper.findTravelsById"/>
+		<association property="video" column="{videoId=video_id}"
+			select="com.zhilv.video.dao.VideoMapper.findVideoById"/>
+	</resultMap>	
+	
+	<select id="findAllGood" resultMap="goodMap">
+		select * from user_good where user_id=#{userId} order by good_id desc
+	</select>
+	
+	<select id="findIfGood" resultType="java.lang.Integer">
+		select count(*) from user_good where user_id=#{userId} and 
+		<if test="null != travelsId">
+			travels_id=#{travelsId}
+		</if>
+		<if test="null != videoId">
+			video_id=#{videoId}
+		</if>
+	</select>
+	
+	<insert id="addGood">
+		insert into user_good(user_id,good_time,
+		<if test="null != travelsId">
+			travels_id
+		</if>
+		<if test="null != videoId">
+			video_id
+		</if>
+		)values(#{userId},#{time}, 
+		<if test="null != travelsId">
+			#{travelsId}
+		</if>
+		<if test="null != videoId">
+			#{videoId}
+		</if>
+		)
+	</insert>
+	
+	<delete id="deleteGood">
+		delete from user_good where user_id=#{userId} and 
+		<if test="null != travelsId">
+			travels_id=#{travelsId}
+		</if>
+		<if test="null != videoId">
+			video_id=#{videoId}
+		</if>
+	</delete>
+	
+	<select id="findPraised" resultMap="goodMap">
+		select * from user_good where good_id in(
+			select ug.good_id from user_good ug 
+			left join travels_detail td on ug.travels_id=td.travels_id 
+			left join video_detail vd on ug.video_id=vd.video_id
+			where td.user_id=#{userId} or vd.user_id=#{userId}
+		)order by good_id desc
+	</select>
+</mapper>
+
+
