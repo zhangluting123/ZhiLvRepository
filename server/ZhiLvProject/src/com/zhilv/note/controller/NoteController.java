@@ -23,7 +23,6 @@ import com.zhilv.usergood.service.GoodService;
 import com.zhilv.util.SortUtil;
 import com.zhilv.video.service.VideoService;
 
-import sun.net.www.content.image.gif;
 
 /**   
  * @ClassName: DetailController   
