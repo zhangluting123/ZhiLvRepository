@@ -9,20 +9,26 @@
 <title>Insert title here</title>
 </head>
 <body>
-<!--  
-	<a href="${ctx}/audit/topic/add?title=重庆之行&userId=4">重庆之行</a>
-	<a href="${ctx}/audit/topic/add?title=拉萨之行&userId=4">拉萨之行</a>
-	<a href="${ctx}/audit/topic/add?title=成都之行&userId=4">成都之行</a>
-	<a href="${ctx}/audit/topic/add?title=西藏之行&userId=4">西藏之行</a>
--->
+
 	<a href="${ctx}/audit/topic/list/1">AuditTopic列表</a>
 	<br>
 	<a href="${ctx}/audit/travels/list/1">AuditTravels列表</a>
 	<br>
 	<a href="${ctx}/audit/video/list/1">AuditVideo列表</a>
-	
 	<br>
-<!-- 
+	<br>
+	<a href="${ctx }/note/locationlist?location=石家庄">同城note</a>
+	<a href="${ctx }/note/followlist?userId=5">关注的note</a>
+	<a href="${ctx }/note/destinationlist?destination=北京">目的地note</a>
+	<a href="${ctx }/note/userlist?userId=5">用户的note</a>
+	<a href="${ctx }/note/topiclist?topicId=2">话题的note</a>
+	<a href="${ctx }/notification/list?userId=6">用户通知</a>
+	
+	<!--  
+	<a href="${ctx}/audit/topic/add?title=重庆之行&userId=4">重庆之行</a>
+	-->
+	
+	<!-- 
 	<a href="${ctx }/comment/add?videoId=12&userId=4&commentContent=video12的评论">video12的评论</a>
 	<a href="${ctx }/comment/add?travelsId=10&userId=4&commentContent=travels10的评论">travels10的评论</a>
 	<br>
@@ -59,5 +65,6 @@
 	<a href="${ctx }/collection/delete?userId=4&travelsId=9">删除travels收藏</a>
 	<a href="${ctx }/note/collectionlist?userId=4">查询收藏列表</a>
 	-->
+	
 </body>
 </html>

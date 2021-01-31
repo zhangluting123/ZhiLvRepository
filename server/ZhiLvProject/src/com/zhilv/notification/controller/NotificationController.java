@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.zhilv.entity.Notification;
 import com.zhilv.notification.service.NotificationService;
 
@@ -27,7 +28,7 @@ public class NotificationController {
 	@Resource
 	private NotificationService notificationService;
 	
-	@RequestMapping(value="/find", method=RequestMethod.GET, produces="application/json;charset=utf-8")
+	@RequestMapping(value="/list", method=RequestMethod.GET, produces="application/json;charset=utf-8")
 	public String findNotificationByUserId(HttpServletRequest request, @RequestParam(value="userId", required=true)String userId) {
 		List<Notification> list = this.notificationService.findNotification(userId);
 		for(Notification n: list) {
@@ -35,7 +36,7 @@ public class NotificationController {
 		}
 		String str = "";
 		if(list.size() > 0) {
-			Gson gson = new Gson();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 			str = gson.toJson(list);
 			System.out.println("共有"+list.size()+"条通知");
 		}else {

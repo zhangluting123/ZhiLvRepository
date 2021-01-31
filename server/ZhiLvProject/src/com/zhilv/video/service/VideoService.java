@@ -7,7 +7,6 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.zhilv.entity.MoreDetail;
-import com.zhilv.entity.Travels;
 import com.zhilv.entity.Video;
 import com.zhilv.video.dao.VideoMapper;
 
@@ -22,6 +21,46 @@ public class VideoService {
 	
 	@Resource
 	private VideoMapper videoMapper;
+	
+	/**
+	 * @Title: findVideoByTopicId
+	 * @Description: 查询指定话题的视频
+	 * @author: 张璐婷 
+	 * @date: 2021年1月31日 下午3:22:21
+	 */
+	public List<Video> findVideoByTopicId(Integer topicId){
+		return videoMapper.findVideoByTopicId(topicId);
+	}
+	
+	/**
+	 * @Title: findVideoFollowed
+	 * @Description: 查询关注的人的视频
+	 * @author: 张璐婷 
+	 * @date: 2021年1月31日 下午2:38:55
+	 */
+	public List<Video> findVideoFollowed(Integer userId){
+		return videoMapper.findVideoFollowed(userId);
+	}
+	
+	/**
+	 * @Title: findVideoByUserId
+	 * @Description: 根据用户id值查询指定游记
+	 * @author: 张璐婷 
+	 * @date: 2021年1月31日 下午1:45:42
+	 */
+	public List<Video> findVideoByUserId(Integer userId){
+		return videoMapper.findVideoByUserId(userId);
+	}
+	
+	/**
+	 * @Title: findVideoByLocation
+	 * @Description: 查询指定地点的视频
+	 * @author: 张璐婷 
+	 * @date: 2021年1月31日 下午1:44:58
+	 */
+	public List<Video> findVideoByLocation(String location){
+		return videoMapper.findVideoByLocation(location);
+	}
 	
 	/**
 	 * @Title: addAuditVideo
@@ -62,17 +101,7 @@ public class VideoService {
 	public List<Video> findAllVideo(){
 		return videoMapper.findAllVideo();
 	}
-	
-	/**
-	 * @Title: findVideoByStr
-	 * @Description: 根据字符串模糊查询相应video
-	 * @author: 张璐婷 
-	 * @date: 2021年1月20日 上午11:46:18
-	 */
-	public List<Video> findVideoByStr(String str){
-		return videoMapper.findVideoByStr(str);
-	}
-	
+
 	
 	/**
 	 * @Title: findVideoById

@@ -17,6 +17,38 @@ import com.zhilv.entity.Video;
 public interface VideoMapper {
 	
 	/**
+	 * @Title: findVideoByTopicId
+	 * @Description: 查询指定话题的视频
+	 * @author: 张璐婷 
+	 * @date: 2021年1月31日 下午3:22:21
+	 */
+	public List<Video> findVideoByTopicId(Integer topicId);
+	
+	/**
+	 * @Title: findVideoFollowed
+	 * @Description: 查询关注的人的视频
+	 * @author: 张璐婷 
+	 * @date: 2021年1月31日 下午2:38:55
+	 */
+	public List<Video> findVideoFollowed(Integer userId);
+	
+	/**
+	 * @Title: findVideoByUserId
+	 * @Description: 根据用户id值查询指定游记
+	 * @author: 张璐婷 
+	 * @date: 2021年1月31日 下午1:45:42
+	 */
+	public List<Video> findVideoByUserId(Integer userId);
+	
+	/**
+	 * @Title: findVideoByLocation
+	 * @Description: 查询指定地点的视频
+	 * @author: 张璐婷 
+	 * @date: 2021年1月31日 下午1:44:58
+	 */
+	public List<Video> findVideoByLocation(String location);
+	
+	/**
 	 * @Title: addAuditVideo
 	 * @Description: 添加发布版视频
 	 * @author: 张璐婷 
@@ -47,14 +79,6 @@ public interface VideoMapper {
 	 * @date: 2021年1月19日 下午7:57:52
 	 */
 	public List<Video> findAllVideo();
-	
-	/**
-	 * @Title: findVideoByStr
-	 * @Description: 根据字符串模糊查询相应video
-	 * @author: 张璐婷 
-	 * @date: 2021年1月20日 上午11:46:18
-	 */
-	public List<Video> findVideoByStr(@Param("str")String str);
 	
 	
 	/**

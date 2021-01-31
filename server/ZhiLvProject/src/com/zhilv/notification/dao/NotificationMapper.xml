@@ -13,5 +13,6 @@
 		select *
 		from notification n
 		where n.user_id=#{userId} or n.user_id=0
+		order by notification_id desc
 	</select>
 </mapper>

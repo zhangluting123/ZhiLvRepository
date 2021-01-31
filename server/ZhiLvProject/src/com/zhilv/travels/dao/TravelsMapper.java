@@ -17,6 +17,38 @@ import com.zhilv.entity.Travels;
 public interface TravelsMapper {
 	
 	/**
+	 * @Title: findTravelsByTopicId
+	 * @Description: 查询指定话题的游记
+	 * @author: 张璐婷 
+	 * @date: 2021年1月31日 下午3:20:23
+	 */
+	public List<Travels> findTravelsByTopicId(Integer topicId);
+	
+	/**
+	 * @Title: findTravelsFollowed
+	 * @Description: 查询关注的人的游记
+	 * @author: 张璐婷 
+	 * @date: 2021年1月31日 下午2:36:43
+	 */
+	public List<Travels> findTravelsFollowed(Integer userId);
+	
+	/**
+	 * @Title: findTravelsByUserId
+	 * @Description: 查询指定用户游记
+	 * @author: 张璐婷 
+	 * @date: 2021年1月31日 下午1:39:34
+	 */
+	public List<Travels> findTravelsByUserId(Integer userId);
+	
+	/**
+	 * @Title: findTravelsByLocation
+	 * @Description: 查询同城游记
+	 * @author: 张璐婷 
+	 * @date: 2021年1月31日 下午1:34:49
+	 */
+	public List<Travels> findTravelsByLocation(String location);
+	
+	/**
 	 * @Title: addAuditTravels
 	 * @Description: 添加发布版游记
 	 * @author: 张璐婷 
@@ -88,14 +120,6 @@ public interface TravelsMapper {
 	 */
 	public List<Travels> findAllTravels();
 	
-	/**
-	 * @Title: findTravelsByStr
-	 * @Description: 根据字符串模糊查询相应travels
-	 * @author: 张璐婷 
-	 * @date: 2021年1月20日 上午11:46:18
-	 */
-	public List<Travels> findTravelsByStr(@Param("str")String str);
-	
 	
 	/**
 	 * @Title: findTravelsById
@@ -128,5 +152,6 @@ public interface TravelsMapper {
 	 * @date: 2021年1月26日 上午11:37:12
 	 */
 	public int deleteImgByTravelsId(@Param("travelsId")Integer travelsId);
+	
 }
 

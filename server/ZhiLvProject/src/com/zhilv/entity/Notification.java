@@ -1,7 +1,6 @@
 package com.zhilv.entity;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**   
  * @ClassName: Notification   
@@ -38,13 +37,6 @@ public class Notification {
 	}
 	public void setTime(Date time) {
 		this.time = time;
-	}
-	
-	@Override
-	public String toString() {
-		SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss ");
-		String str = f.format(time);
-		return "Notification [id=" + id + ", title=" + title + ", content=" + content + ", time=" + str +"]";
 	}
 	
 	

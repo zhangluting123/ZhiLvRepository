@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import com.zhilv.entity.Img;
@@ -23,6 +22,46 @@ public class TravelsService {
 	
 	@Resource
 	private TravelsMapper travelsMapper;
+	
+	/**
+	 * @Title: findTravelsByTopicId
+	 * @Description: 查询指定话题的游记
+	 * @author: 张璐婷 
+	 * @date: 2021年1月31日 下午3:20:23
+	 */
+	public List<Travels> findTravelsByTopicId(Integer topicId){
+		return travelsMapper.findTravelsByTopicId(topicId);
+	}
+	
+	/**
+	 * @Title: findTravelsFollowed
+	 * @Description: 查询关注的人的游记
+	 * @author: 张璐婷 
+	 * @date: 2021年1月31日 下午2:36:43
+	 */
+	public List<Travels> findTravelsFollowed(Integer userId){
+		return travelsMapper.findTravelsFollowed(userId);
+	}
+	
+	/**
+	 * @Title: findTravelsByUserId
+	 * @Description: 查询指定用户游记
+	 * @author: 张璐婷 
+	 * @date: 2021年1月31日 下午1:39:34
+	 */
+	public List<Travels> findTravelsByUserId(Integer userId){
+		return travelsMapper.findTravelsByUserId(userId);
+	}
+	
+	/**
+	 * @Title: findTravelsByLocation
+	 * @Description: 查询同城游记
+	 * @author: 张璐婷 
+	 * @date: 2021年1月31日 下午1:34:49
+	 */
+	public List<Travels> findTravelsByLocation(String location){
+		return travelsMapper.findTravelsByLocation(location);
+	}
 	
 	/**
 	 * @Title: addAuditTravels
@@ -113,17 +152,7 @@ public class TravelsService {
 	public List<Travels> findAllTravels(){
 		return travelsMapper.findAllTravels();
 	}
-	
-	/**
-	 * @Title: findTravelsByStr
-	 * @Description: 根据字符串模糊查询相应travels
-	 * @author: 张璐婷 
-	 * @date: 2021年1月20日 上午11:46:18
-	 */
-	public List<Travels> findTravelsByStr(String str){
-		return travelsMapper.findTravelsByStr(str);
-	}
-	
+
 	/**
 	 * @Title: findTravelsById
 	 * @Description: 根据ID值查询游记

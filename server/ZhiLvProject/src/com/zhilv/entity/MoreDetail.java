@@ -18,6 +18,8 @@ public class MoreDetail {
 	private Integer money;
 	private Integer travelsId;
 	private Integer videoId;
+	private Travels travels;
+	private Video video;
 	public Integer getMoreId() {
 		return moreId;
 	}
@@ -72,11 +74,17 @@ public class MoreDetail {
 	public void setVideoId(Integer videoId) {
 		this.videoId = videoId;
 	}
-	@Override
-	public String toString() {
-		return "MoreDetail [moreId=" + moreId + ", destination=" + destination + ", traffic=" + traffic + ", beginDate="
-				+ beginDate + ", days=" + days + ", people=" + people + ", money=" + money + ", travelsId=" + travelsId
-				+ ", videoId=" + videoId + "]";
+	public Travels getTravels() {
+		return travels;
+	}
+	public void setTravels(Travels travels) {
+		this.travels = travels;
+	}
+	public Video getVideo() {
+		return video;
+	}
+	public void setVideo(Video video) {
+		this.video = video;
 	}
 	
 	

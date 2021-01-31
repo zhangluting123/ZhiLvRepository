@@ -109,7 +109,7 @@
 	</update>
 	
 	<!-- 查询关注列表 -->
-	<select id="findFollowed" resultMap="userMap">
+	<select id="findFollowed" resultMap="userMap2">
 		select user_id,user_head,user_name,user_sex,user_birth,user_signature 
 		from user_detail 
 		where user_id in(
@@ -120,7 +120,7 @@
 	</select>
 	
 	<!-- 查询粉丝列表 -->
-	<select id="findFans" resultMap="userMap">
+	<select id="findFans" resultMap="userMap2">
 		select user_id,user_head,user_name,user_sex,user_birth,user_signature 
 		from user_detail
 		where user_id in(

@@ -40,6 +40,41 @@
 		<result property="travelsId" column="img_travels_id"/>
 	</resultMap>
 	
+	<!-- 查询指定话题的游记 -->
+	<select id="findTravelsByTopicId" resultMap="travelsMap">
+		select * from travels_detail t
+		left join more_detail m on t.travels_id=m.travels_id
+		left join travels_img ti on t.travels_id=ti.img_travels_id
+		where t.topic_id=#{topicId}
+	</select>
+	
+	<!-- 查询关注的人的游记-->
+	<select id="findTravelsFollowed" resultMap="travelsMap">
+		select * from travels_detail t
+		left join more_detail m on t.travels_id=m.travels_id
+		left join travels_img ti on t.travels_id=ti.img_travels_id
+		where t.user_id in(
+			select other_user_id 
+			from attention 
+			where mine_user_id = #{userId}
+		)
+	</select>
+	
+	<select id="findTravelsByUserId" resultMap="travelsMap">
+		select * from travels_detail t
+		left join more_detail m on t.travels_id=m.travels_id
+		left join travels_img ti on t.travels_id=ti.img_travels_id
+		where t.user_id=#{userId}
+	</select>
+	
+	<!-- 查询同城游记 -->
+	<select id="findTravelsByLocation" resultMap="travelsMap">
+		select * from travels_detail t
+		left join more_detail m on t.travels_id=m.travels_id
+		left join travels_img ti on t.travels_id=ti.img_travels_id
+		where t.travels_location like concat('%',#{location},'%')
+	</select>
+	
 	<!-- 添加发布版游记  -->
 	<insert id="addTravels" useGeneratedKeys="true" keyProperty="travelsId">
 		insert into travels_detail
@@ -138,14 +173,6 @@
 		select * from travels_detail t
 		left join more_detail m on t.travels_id=m.travels_id
 		left join travels_img ti on t.travels_id=ti.img_travels_id
-	</select>
-	
-	<!-- 根据字符串模糊查询相应travels -->
-	<select id="findTravelsByStr" resultMap="travelsMap">
-		select * from travels_detail t
-		left join more_detail m on t.travels_id=m.travels_id
-		left join travels_img ti on t.travels_id=ti.img_travels_id
-		where m.destination like concat('%',#{str},'%')
 	</select>
 	
 	<!-- 根据ID查询游记 -->
