@@ -26,4 +26,14 @@ public class NotificationService {
 	public List<Notification> findNotification(String userId){
 		return notificationMapper.findNotification(userId);
 	}
+	
+	/**
+	 * @Title: addNotification
+	 * @Description: 添加消息
+	 * @author: 张璐婷 
+	 * @date: 2021年2月2日 下午2:49:38
+	 */
+	public int addNotification(Notification notification){
+		return notificationMapper.addNotification(notification);
+	}
 }

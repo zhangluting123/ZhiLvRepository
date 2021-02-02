@@ -15,4 +15,16 @@
 		where n.user_id=#{userId} or n.user_id=0
 		order by notification_id desc
 	</select>
+	
+	<insert id="addNotification">
+		insert into notification(notification_title,notification_content,notification_time
+		<if test="null != noti.userId">
+		,user_id
+		</if>
+		)values(#{noti.title},#{noti.content},#{noti.time}
+		<if test="null != noti.userId">
+		,#{noti.userId}
+		</if>
+		)
+	</insert>
 </mapper>

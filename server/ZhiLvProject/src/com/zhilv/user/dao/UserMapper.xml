@@ -148,4 +148,29 @@
 		delete from attention where mine_user_id=#{attention.mineId} and other_user_id=#{attention.otherId} 
 	</delete>
 	
+	<!-- 根据用户名查询用户 -->
+	<select id="findUserByName" resultMap="userMap2">
+		select user_id,user_head,user_name,user_sex,user_birth,user_signature 
+		from user_detail where user_name =#{userName}
+	</select>
+	
+	<select id="findAllUser" resultMap="userMap2">
+		select user_id,user_head,user_name,user_sex,user_birth,user_signature 
+		from user_detail
+	</select>
+	
+	<!-- 删除用户信息 -->
+	<delete id="deleteUserById">
+		delete from user_detail where user_id=#{userId}
+	</delete>
+	
+	<!-- 分页查询 -->
+	<select id="findForPage" resultMap="userMap2">
+		select * from user_detail limit #{param1},#{param2}
+	</select>
+	
+	<!-- 查询用户数量 -->
+	<select id="findCountUser" resultType="java.lang.Integer">
+		select count(*) from user_detail
+	</select>
 </mapper>

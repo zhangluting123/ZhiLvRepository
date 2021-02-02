@@ -97,7 +97,43 @@ public interface UserMapper {
 	 */
 	public int deleteAttention(@Param("attention")Attention attention);
 	
+	/**
+	 * @Title: findUserByName
+	 * @Description: 根据用户名查询用户
+	 * @author: 张璐婷 
+	 * @date: 2021年2月2日 上午11:53:31
+	 */
+	public User findUserByName(String userName);
 	
+	/**
+	 * @Title: findAllUser
+	 * @Description: 查询所有用户
+	 * @author: 张璐婷 
+	 * @date: 2021年2月2日 下午1:56:26
+	 */
+	public List<User> findAllUser();
 	
+	/**
+	 * @Title: deleteUserById
+	 * @Description: 删除用户信息
+	 * @author: 张璐婷 
+	 * @date: 2021年2月2日 下午7:48:53
+	 */
+	public int deleteUserById(Integer userId);
+
+	/**
+	 * @Title: findForPage
+	 * @Description: 分页查询
+	 * @author: 张璐婷 
+	 * @date: 2021年2月2日 下午7:55:28
+	 */
+	public List<User> findForPage(int startIndex, int pageSize);
 	
+	/**
+	 * @Title: findCountUser
+	 * @Description: 查询用户数量
+	 * @author: 张璐婷 
+	 * @date: 2021年2月2日 下午7:55:58
+	 */
+	public int findCountUser();
 }

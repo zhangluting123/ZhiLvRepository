@@ -8,15 +8,156 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <title>Insert title here</title>
+<script type="text/javascript" src="${ctx }/js/jquery-3.4.1.min.js"></script>
+<style type="text/css">
+	.img{
+		width:20px;
+		height:20px;
+		margin:0px 10px 0px 10px;
+		align-self:center;
+	}
+	.submit-div{
+		margin:10px;
+		height:30px;
+		display:flex;
+	}
+	button{
+		margin-right:20px;
+		width:200px;
+	}
+</style>
+<script>
+$(document).ready(function(){
+	$("#btnSubmit").click(function(){
+	   var options=$("#typelist").children();
+        for(var i=0;i<options.length;i++){
+            if(options.eq(i).val().trim()==$("#text_user").val().trim()){
+                var select1 = options.eq(i).attr("data-id");
+                break;
+            }
+        }
+		var title = $('#title').val();
+		var content = $('#content').val();
+		$.post("${ctx }/notification/add",{"userId":select1,"title":title,"content":content},function(data,status){
+			if(data == "OK"){
+				$("#text_user").val('');
+				$('#title').val('');
+				$('#content').val('');
+				$('#success_p').html('发布成功');
+				$('#success_p').attr('style','color:green;align-self:center');
+				$('#img').attr('src','${ctx}/audit/success.png');
+				$('#img').addClass('img');
+			}else{
+				$('#success_p').html('发布失败');
+				$('#success_p').attr('style','color:red;align-self:center');
+				$('#img').attr('src','${ctx}/audit/fail.png');
+				$('#img').addClass('img');
+			}
+		});
+	});
+	
+	
+});
+
+
+
+</script>
 </head>
 <body>
-<!--  
-	<a href="/ZhiLvProject/notification/find?userId=1">通知消息userId=1</a>
-	<a href="http://localhost:8080/ZhiLvProject/notification/find?userId=1">通知消息userId=1</a>
-	<a href="http://localhost:8080/ZhiLvProject/notification/find?userId=2">通知消息userId=2</a>
--->
 <fieldset>
-<h4>话题后台</h4>
+<h4>用户管理后台</h4>
+	<div class="audit_user">
+		<table border="1" cellpadding="10">
+			<tr>
+			<td>user_id</td>
+			<td>user_head</td>
+			<td>user_name</td>
+			<td>user_sex</td>
+			<td>user_birth</td>
+			<td>user_signature</td>
+			<td>operation</td>
+			</tr>
+			<c:forEach items="${userPage.list}" var="user">
+				<tr>
+				<td>${user.userId}</td>
+				<td><img src="${ctx}/${user.userHead }" class="img"/></td>
+				<td>${user.userName }</td>
+				<td>${user.sex }</td>
+				<td><fmt:formatDate type="date" value="${user.birth }"/></td>
+				<td>${user.signature }</td>
+				<td><a href="${ctx }/audit/user/delete?userId=${user.userId}">删除</a></td>
+				</tr>
+			</c:forEach>
+		</table>
+	</div>
+	<div id="custom-page"  style="text-align:center;float:right;">
+		<div>共 &nbsp;${userPage.totalCount }&nbsp;条数据 &nbsp;&nbsp;共 &nbsp;${userPage.totalPageNum }&nbsp;页  &nbsp; &nbsp; &nbsp;</div>
+		<div>
+			<a href="${ctx }/audit/user/list/1/">首页</a> 
+			<a href="${ctx }/audit/user/list/${userPage.prePageNum }" >上一页</a> 
+			<a href="${ctx }/audit/user/list/${userPage.nextPageNum }" >下一页</a> 
+			<a href="${ctx }/audit/user/list/${userPage.totalPageNum }">末页</a> 
+		</div>
+	</div>
+
+	<br>
+</fieldset>
+	<!-- ======================================================= -->
+<fieldset>
+<h4>问题反馈后台</h4>
+	<div class="problem">
+		<table border="1" cellpadding="10">
+			<tr>
+			<td>problem_id</td>
+			<td>content</td>
+			<td>userName</td>
+			<td>time</td>
+			</tr>
+			<c:forEach items="${problemPage.list}" var="pro">
+				<tr>
+				<td>${pro.id}</td>
+				<td>${pro.content }</td>
+				<td>${pro.user.userName }</td>
+				<td><fmt:formatDate type="both" value="${pro.time}"/></td>
+				</tr>
+			</c:forEach>
+		</table>
+	</div>
+	<div id="custom-page"  style="text-align:center;float:right;">
+		<div>共 &nbsp;${problemPage.totalCount }&nbsp;条数据 &nbsp;&nbsp;共 &nbsp;${problemPage.totalPageNum }&nbsp;页  &nbsp; &nbsp; &nbsp;</div>
+		<div>
+			<a href="${ctx }/problem/list/1/">首页</a> 
+			<a href="${ctx }/problem/list/${problemPage.prePageNum }" >上一页</a> 
+			<a href="${ctx }/problem/list/${problemPage.nextPageNum }" >下一页</a> 
+			<a href="${ctx }/problem/list/${problemPage.totalPageNum }">末页</a> 
+		</div>
+	</div>
+
+	<br>
+</fieldset>
+	<!-- ======================================================= -->
+<fieldset>
+	<h4>通知消息:</h4>
+	通知标题：
+	<input type="text" name="title" id="title"/><br>
+	通知内容：
+	<input type="text" name="content" id="content"/><br>
+	通知到人：
+	<input list="typelist" id="text_user" placeholder="所有人"/>
+	
+	<datalist id="typelist">
+		<option data-id="-1" selected="selected">所有人</option>
+		<c:forEach items="${userList }" var="user">
+			<option data-id="${user.userId }">${user.userId }&nbsp;&nbsp;${user.userName }</option>
+		</c:forEach>
+	</datalist>
+	<div class="submit-div">
+		<button id="btnSubmit">提交</button>
+		<img id="img" src=""/><span id="success_p"></span>
+	</div>
+</fieldset>
+<fieldset>
+	<h4>话题后台</h4>
 	<div class="audit_topic">
 		<table border="1" cellpadding="10">
 			<tr>
@@ -53,11 +194,10 @@
 			<a href="${ctx }/audit/topic/list/${topicPage.totalPageNum }">末页</a> 
 		</div>
 	</div>
-
-	<br>
 	<a href="${ctx}/topic/list">topic公开列表</a>
 	<a href="${ctx}/topic/like?str=重庆">字符串查询</a>
 </fieldset>
+
 	<!-- ======================================================= -->
 <fieldset>
 <h4>游记后台</h4>

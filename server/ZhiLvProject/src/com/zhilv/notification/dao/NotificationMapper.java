@@ -22,4 +22,12 @@ public interface NotificationMapper {
 	 * @date: 2021年1月13日 下午4:56:27
 	 */
 	public List<Notification> findNotification(@Param("userId")String userId);
+	
+	/**
+	 * @Title: addNotification
+	 * @Description: 添加消息
+	 * @author: 张璐婷 
+	 * @date: 2021年2月2日 下午2:49:38
+	 */
+	public int addNotification(@Param("noti")Notification notify);
 }

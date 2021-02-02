@@ -9,7 +9,13 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+	<a href="${ctx }/problem/add?content=内容1&userId=6">问题1</a>
+	<a href="${ctx }/audit/user/list/1">用户管理界面</a>
+	<br>
+	<a href="${ctx }/problem/list/1">问题反馈界面</a>
+	<br>
+	<a href="${ctx }/notification/userlist">通知界面</a>
+	<br>
 	<a href="${ctx}/audit/topic/list/1">AuditTopic列表</a>
 	<br>
 	<a href="${ctx}/audit/travels/list/1">AuditTravels列表</a>
