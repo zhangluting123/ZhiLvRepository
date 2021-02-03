@@ -156,6 +156,7 @@ $(document).ready(function(){
 		<img id="img" src=""/><span id="success_p"></span>
 	</div>
 </fieldset>
+	<!-- ======================================================= -->
 <fieldset>
 	<h4>话题后台</h4>
 	<div class="audit_topic">
