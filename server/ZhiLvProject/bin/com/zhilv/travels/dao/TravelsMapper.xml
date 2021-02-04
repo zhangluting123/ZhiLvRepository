@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhilv.travels.dao.TravelsMapper">
+	<resultMap type="com.zhilv.entity.Travels" id="travelsMap">
+		<id property="travelsId" column="travels_id"/>
+		<result property="title" column="travels_title"/>
+		<result property="route" column="travels_route"/>
+		<result property="scene" column="travels_scene"/>
+		<result property="ticket" column="travels_ticket"/>
+		<result property="hotel" column="travels_hotel"/>
+		<result property="tips" column="travels_tips"/>
+		<result property="location" column="travels_location"/>
+		<result property="uploadTime" column="travels_upload_time"/>
+		<association property="topic" column="{topicId=topic_id}"
+			select="com.zhilv.topic.dao.TopicMapper.findTopicById"/>
+		<association property="detail">
+			<id property="moreId" column="more_id"/>
+			<result property="destination" column="more_destination"/>
+			<result property="traffic" column="more_traffic"/>
+			<result property="beginDate" column="more_begin_date"/>
+			<result property="days" column="more_days"/>
+			<result property="people" column="more_people"/>
+			<result property="money" column="more_money"/>
+			<result property="travelsId" column="travels_id"/>
+			<result property="videoId" column="video_id"/>
+		</association>
+		<association property="user" column="{userId=user_id}"
+			select="com.zhilv.user.dao.UserMapper.findUserByUserId">
+		</association>
+		<collection property="imgList" ofType="com.zhilv.entity.Img">
+			<id property="imgId" column="img_id"/>
+			<result property="path" column="img_path"/>
+			<result property="travelsId" column="img_travels_id"/>
+		</collection>
+	</resultMap>
+	
+	<resultMap type="com.zhilv.entity.Img" id="imgMap">
+		<id property="imgId" column="img_id"/>
+		<result property="path" column="img_path"/>
+		<result property="travelsId" column="img_travels_id"/>
+	</resultMap>
+	
+	<!-- 查询指定话题的游记 -->
+	<select id="findTravelsByTopicId" resultMap="travelsMap">
+		select * from travels_detail t
+		left join more_detail m on t.travels_id=m.travels_id
+		left join travels_img ti on t.travels_id=ti.img_travels_id
+		where t.topic_id=#{topicId}
+	</select>
+	
+	<!-- 查询关注的人的游记-->
+	<select id="findTravelsFollowed" resultMap="travelsMap">
+		select * from travels_detail t
+		left join more_detail m on t.travels_id=m.travels_id
+		left join travels_img ti on t.travels_id=ti.img_travels_id
+		where t.user_id in(
+			select other_user_id 
+			from attention 
+			where mine_user_id = #{userId}
+		)
+	</select>
+	
+	<select id="findTravelsByUserId" resultMap="travelsMap">
+		select * from travels_detail t
+		left join more_detail m on t.travels_id=m.travels_id
+		left join travels_img ti on t.travels_id=ti.img_travels_id
+		where t.user_id=#{userId}
+	</select>
+	
+	<!-- 查询同城游记 -->
+	<select id="findTravelsByLocation" resultMap="travelsMap">
+		select * from travels_detail t
+		left join more_detail m on t.travels_id=m.travels_id
+		left join travels_img ti on t.travels_id=ti.img_travels_id
+		where t.travels_location like concat('%',#{location},'%')
+	</select>
+	
+	<!-- 添加发布版游记  -->
+	<insert id="addTravels" useGeneratedKeys="true" keyProperty="travelsId">
+		insert into travels_detail
+		values(#{travels.travelsId},#{travels.title},#{travels.route},#{travels.scene},#{travels.ticket},#{travels.hotel},
+		#{travels.tips},#{travels.topic.topicId},#{travels.location},#{travels.uploadTime},#{travels.detail.moreId},#{travels.user.userId})
+	</insert>
+	
+	<!--  添加图片-->
+	<insert id="addTravelsImg">
+		insert into
+		travels_img(img_path,img_travels_id) 
+		values
+		<foreach collection="imgs" item="img" separator=",">
+			(#{img.path},#{img.travelsId})
+		</foreach>
+	</insert>
+	
+	<!-- 添加详细信息 -->
+	<insert id="addTravelsDetail" useGeneratedKeys="true" keyProperty="moreId">
+		insert into more_detail(more_destination,more_traffic,more_begin_date,more_days,more_people,more_money)
+		values(#{detail.destination},#{detail.traffic},#{detail.beginDate},#{detail.days},#{detail.people},#{detail.money}) 
+	</insert>
+	
+	<!-- 更新more_detail连接travel_id -->
+	<update id="updateDetailTravelsIdById">
+		update more_detail set travels_id=#{travelsId} where more_id=#{moreId} 
+	</update>
+	
+	<!-- 更新游记 -->
+	<update id="updateTravelsById">
+		update travels_detail 
+		<set>
+			<if test="null != travels.title and !travels.title.equals('')">
+				travels_title=#{travels.title},
+			</if>
+			<if test="null != travels.route and !travels.route.equals('')">
+				travels_route=#{travels.route},
+			</if>
+			<if test="null != travels.scene and !travels.scene.equals('')">
+				travels_scene=#{travels.scene},
+			</if>
+			<if test="null != travels.ticket and !travels.ticket.equals('')">
+				travels_ticket=#{travels.ticket},
+			</if>
+			<if test="null != travels.hotel and !travels.hotel.equals('')">
+				travels_hotel=#{travels.hotel},
+			</if>
+			<if test="null != travels.tips and !travels.tips.equals('')">
+				travels_tips=#{travels.tips},
+			</if>
+			<if test="null != travels.topic.topicId">
+				topic_id=#{travels.topic.topicId},
+			</if>
+		</set>
+		where travels_id=#{travels.travelsId}
+	</update>
+	
+	<!-- 根据travelsId查找图片  -->
+	<select id="findImgByTravelsId" resultMap="imgMap">
+		select * from travels_img where img_travels_id=#{travelsId}
+	</select>
+	
+	<!--  根据ID值删除图片 -->
+	<delete id="deleteImgById">
+		delete from travels_img where img_id=#{imgId}
+	</delete>
+	
+	<!-- 更新详情 -->
+	<update id="updateTravelsDetail">
+		update more_detail 
+		<set>
+			<if test="null != detail.destination and !detail.destination.equals('')">
+				more_destination=#{detail.destination},
+			</if>
+			<if test="null != detail.traffic and !detail.traffic.equals('')">
+				more_traffic=#{detail.traffic},
+			</if>
+			<if test="null != detail.beginDate">
+				more_begin_date=#{detail.beginDate},
+			</if>
+			<if test="null != detail.days">
+				more_days=#{detail.days},
+			</if>
+			<if test="null != detail.people and !detail.people .equals('')">
+				more_people=#{detail.people},
+			</if>
+			<if test="null != detail.money">
+				more_money=#{detail.money},
+			</if>
+		</set>
+		where travels_id=#{detail.travelsId}
+	</update>
+	
+	<!-- 查询所有发布版游记 -->
+	<select id="findAllTravels" resultMap="travelsMap">
+		select * from travels_detail t
+		left join more_detail m on t.travels_id=m.travels_id
+		left join travels_img ti on t.travels_id=ti.img_travels_id
+	</select>
+	
+	<!-- 根据ID查询游记 -->
+	<select id="findTravelsById" resultMap="travelsMap">
+		select * from travels_detail t
+		left join more_detail m on t.travels_id=m.travels_id
+		left join travels_img ti on t.travels_id=ti.img_travels_id
+		where t.travels_id=#{travelsId}
+	</select>
+	
+	<!-- 根据ID删除游记 -->
+	<delete id="deleteTravelsById">
+		delete from travels_detail where travels_id=#{travelsId}
+	</delete>
+	
+	<!-- 根据ID删除详细信息 -->
+	<delete id="deleteDetailByTravelsId">
+		delete from more_detail where travels_id=#{travelsId}
+	</delete>
+	
+	<!-- 根据ID删除详细图片 -->
+	<delete id="deleteImgByTravelsId">
+		delete from travels_img where img_travels_id=#{travelsId}
+	</delete>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

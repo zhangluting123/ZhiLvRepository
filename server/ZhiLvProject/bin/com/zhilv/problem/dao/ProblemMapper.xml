@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhilv.problem.dao.ProblemMapper">
+	<resultMap type="com.zhilv.entity.Problem" id="proMap">
+		<id property="id" column="problem_id"/>
+		<result property="content" column="problem_content"/>
+		<result property="time" column="problem_time"/>
+		<association property="user" column="{userId=user_id}"
+			select="com.zhilv.user.dao.UserMapper.findUserByUserId"/>
+	</resultMap>
+	
+	<select id="findAllProblem" resultMap="proMap">
+		select * from problem
+	</select>
+	
+	<insert id="addProblem">
+		insert into problem(problem_content,problem_time,user_id)
+		values(#{content},#{time},#{userId})
+	</insert>
+	
+	<!-- 分页查询 -->
+	<select id="findForPage" resultMap="proMap">
+		select * from problem limit #{param1},#{param2}
+	</select>
+	
+	<select id="findCountProblem" resultType="java.lang.Integer">
+		select count(*) from problem
+	</select>
+</mapper>

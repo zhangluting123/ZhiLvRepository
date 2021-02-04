@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhilv.audit.video.dao.AuditVideoMapper">
+	<resultMap type="com.zhilv.entity.AuditVideo" id="advdMap">
+		<id property="auditId" column="a_id"/>
+		<result property="videoId" column="a_video_id"/>
+		<result property="path" column="a_video_path"/>
+		<result property="img" column="a_video_img"/>
+		<result property="title" column="a_video_title"/>
+		<result property="content" column="a_video_content"/>
+		<result property="location" column="a_video_location"/>
+		<result property="duration" column="a_video_duration"/>
+		<result property="size" column="a_video_size"/>
+		<result property="uploadTime" column="a_upload_time"/>
+		<result property="userId" column="a_user_id"/>
+		<result property="lastTime" column="a_last_time"/>
+		<result property="status" column="a_status"/>
+		<association property="topic" column="{topicId=a_topic_id}"
+			select="com.zhilv.topic.dao.TopicMapper.findTopicById"/>
+		<association property="detail">
+			<id property="moreId" column="a_more_id"/>
+			<result property="destination" column="a_more_destination"/>
+			<result property="traffic" column="a_more_traffic"/>
+			<result property="beginDate" column="a_more_date"/>
+			<result property="days" column="a_days"/>
+			<result property="people" column="a_more_people"/>
+			<result property="money" column="a_more_money"/>
+			<result property="travelsId" column="a_id_travels"/>
+			<result property="videoId" column="a_id_video"/>
+		</association>
+	</resultMap>
+	
+	<!-- 添加审核版视频 -->
+	<insert id="addAuditVideo" useGeneratedKeys="true" keyProperty="auditId">
+		insert into audit_video(a_id,a_video_id,a_video_path,a_video_img,a_video_title,a_video_content,a_video_location,a_video_duration,a_video_size,a_upload_time,a_more_id,a_user_id,a_topic_id)
+		values(#{audit.auditId},#{audit.videoId},#{audit.path},#{audit.img},#{audit.title},#{audit.content},#{audit.location},#{audit.duration},#{audit.size},#{audit.uploadTime},#{audit.detail.moreId},#{audit.userId},#{audit.topic.topicId})
+	</insert>
+	
+	<insert id="addVideoDetail" useGeneratedKeys="true" keyProperty="moreId">
+		insert into audit_more_detail(a_more_destination,a_more_traffic,a_more_date,a_days,a_more_people,a_more_money)
+		values(#{detail.destination},#{detail.traffic},#{detail.beginDate},#{detail.days},#{detail.people},#{detail.money}) 
+	</insert>
+	
+	<!-- 更新连接a_id_video -->
+	<update id="updateDetailVideoIdById">
+		update audit_more_detail set a_id_video=#{idVideo} where a_more_id=#{moreId} 
+	</update>
+	
+	<!-- 更新审核状态 -->
+	<update id="updateVideoStatus">
+		update audit_video
+		set a_status=#{status},a_last_time=#{time}
+		where a_id=#{auditId}
+	</update>
+	
+	<!-- 根据ID查找 审核版视频-->
+	<select id="findAuditVideoById" resultMap="advdMap">
+		select * from audit_video av
+		left join audit_more_detail m on av.a_id=m.a_id_video
+		where av.a_id=#{auditId}
+	</select>
+		
+	<!-- 查找所有未审核的视频  -->
+	<select id="findAllNotVideoTopic" resultMap="advdMap">
+		select * from audit_video av
+		left join audit_more_detail m on av.a_id=m.a_id_video
+		where av.a_status=0
+	</select>
+	
+	<!-- 分页查询 -->
+	<select id="findForPage" resultMap="advdMap">
+		select * from audit_video av
+		left join audit_more_detail m on av.a_id=m.a_id_video
+		where av.a_status=0 limit #{param1},#{param2}
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="findVideoCount" resultType="java.lang.Integer">
+		select count(*) from audit_video where a_status=0
+	</select>
+	
+</mapper>

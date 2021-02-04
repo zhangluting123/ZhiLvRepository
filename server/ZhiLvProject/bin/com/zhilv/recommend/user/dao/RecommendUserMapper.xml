@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhilv.recommend.user.dao.RecommendUserMapper">
+	<resultMap type="com.zhilv.entity.User" id="userMap">
+		<id property="userId" column="user_id"/>
+		<result property="userHead" column="user_head"/>
+		<result property="userName" column="user_name"/>
+		<result property="sex" column="user_sex"/>
+		<result property="birth" column="user_birth"/>
+		<result property="signature" column="user_signature"/>
+	</resultMap>
+	<select id="findRecommendUser" resultMap="userMap">
+		SELECT user_id,user_head,user_name,user_sex,user_birth,user_signature
+		FROM user_detail
+		WHERE user_id IN(
+			SELECT DISTINCT other_user_id 
+			FROM attention
+			WHERE mine_user_id IN(
+				SELECT other_user_id
+				FROM attention 
+				WHERE mine_user_id=5
+			)
+		)
+	</select>
+</mapper>
