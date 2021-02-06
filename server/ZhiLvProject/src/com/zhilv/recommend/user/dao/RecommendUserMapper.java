@@ -15,6 +15,8 @@ import com.zhilv.entity.User;
 
 public interface RecommendUserMapper {
 	
+	
+	//	给用户推荐关注的用户关注的用户
 	public List<User> findRecommendUser(Integer userId);
 	
 
