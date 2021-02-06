@@ -10,6 +10,8 @@
 		<result property="birth" column="user_birth"/>
 		<result property="signature" column="user_signature"/>
 	</resultMap>
+	
+	<!-- 推荐关注的用户关注的用户 -->
 	<select id="findRecommendUser" resultMap="userMap">
 		SELECT user_id,user_head,user_name,user_sex,user_birth,user_signature
 		FROM user_detail
@@ -19,8 +21,16 @@
 			WHERE mine_user_id IN(
 				SELECT other_user_id
 				FROM attention 
-				WHERE mine_user_id=5
+				WHERE mine_user_id=#{userId}
 			)
 		)
+	</select>
+	
+	<!-- 给用户推荐相同年龄段的用户 -->
+	<!-- 目的：解决冷启动问题 -->
+	<select id="recommendUserByAge" resultMap="userMap">
+		SELECT user_id,user_head,user_name,user_sex,user_birth,user_signature
+		FROM user_detail
+		WHERE YEAR(#{birth})-YEAR(user_birth)>=-5 <![CDATA[ AND YEAR(#{birth})-YEAR(user_birth)<=5 ]]>;
 	</select>
 </mapper>

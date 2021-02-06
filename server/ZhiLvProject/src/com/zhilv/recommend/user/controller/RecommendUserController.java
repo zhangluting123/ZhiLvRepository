@@ -89,16 +89,16 @@ public class RecommendUserController {
 	public String recommendByCommonFolled(@RequestParam("userId")Integer userId) {
 		List<User> allUsers=userService.findAllUser();
 		List<User> followedList1=userService.findFollowed(userId);
-		boolean commonFollowed;
+		double commonFollowed;
 		for(int i = 0;i<allUsers.size();i++) {
 			List<User> followedList2=userService.findFollowed(allUsers.get(i).getUserId());
 			commonFollowed=commonFollowedNum(followedList1, followedList2);
-			if(!commonFollowed) {
+			if(commonFollowed==0.0) {
 				allUsers.remove(i);
 				
 			}
 		}
-		System.out.println(allUsers);
+		allUsers = removeRepeat(allUsers, userId);
 		if(allUsers.size()>0) {
 			Gson gson=new Gson();
 			String str = gson.toJson(allUsers);
@@ -111,26 +111,50 @@ public class RecommendUserController {
 	}
 	
 	/**
+	 * @description:根据用户年龄推荐好友，解决系统冷启动问题
+	 * @author :张梦如
+	 * @date:2021年2月6日
+	 * @param userId
+	 * @return
+	 */
+	//http://localhost:8080/ZhiLvProject/recommend/user/recommendUserByAge?userId=6
+	@RequestMapping(value = "/recommendUserByAge",method = RequestMethod.GET, produces = "application/json;charset=utf-8")
+	public String recommendUserByAge(@RequestParam("userId")Integer userId) {
+		User presentUser=userService.findUserByUserId(userId);
+		List<User> recommendList = recommendUserService.recommendUserByAge(presentUser.getBirth());
+		recommendList=removeRepeat(recommendList, userId);
+		
+		if(recommendList.size()>0) {
+			Gson gson = new Gson();
+			String str = gson.toJson(recommendList);
+			return str;
+		}else {
+			return null;
+		}
+	}
+	
+	/**
 	 * 
-	 * @description:计算两个用户之间是否有共同关注的用户
+	 * @description:计算两个用户之间是否有共同关注的用户所占比例
 	 * @author :张梦如
 	 * @date:2021年2月5日
 	 * @param list1
 	 * @param list2
-	 * @return 若有返回true,否则返回false
+	 * @return 返回比例值
 	 */
 	@RequestMapping(value = "/commonFolloweNum",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
-	public boolean commonFollowedNum(List<User> list1,List<User> list2) {
-		boolean common=false;
+	public double commonFollowedNum(List<User> list1,List<User> list2) {
+		int common=0;
+		double rate;
 		for(int i = 0;i<list1.size();i++) {
 			for(int j = 0;j<list2.size();j++) {
 				if(list1.get(i).getUserId()==list2.get(j).getUserId()) {
-					common=true;
-					break;
+					common+=1;
 				}
 			}
 		}
-		return common;
+		rate=common/(list1.size()+list2.size()-common);
+		return rate;
 	}
 	
 	/**
