@@ -4,14 +4,12 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.springframework.cglib.core.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.zhilv.entity.User;
 import com.zhilv.recommend.user.service.RecommendUserService;
 import com.zhilv.user.service.UserService;
