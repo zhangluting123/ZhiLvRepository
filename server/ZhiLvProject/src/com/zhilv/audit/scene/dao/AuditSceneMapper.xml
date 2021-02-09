@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhilv.audit.scene.dao.AuditSceneMapper">
+	<resultMap type="com.zhilv.entity.AuditScene" id="sceneMap">
+		<id property="auditId" column="a_id"/>
+		<result property="sceneId" column="a_scene_id"/>
+		<result property="path" column="a_scene_path"/>
+		<result property="title" column="a_scene_title"/>
+		<result property="content" column="a_scene_content"/>
+		<result property="rule" column="a_scene_rule"/>
+		<result property="openTime" column="a_scene_open_time"/>
+		<result property="traffic" column="a_scene_traffic"/>
+		<result property="ticket" column="a_scene_ticket"/>
+		<result property="costTime" column="a_scene_cost_time"/>
+		<result property="phone" column="a_scene_phone"/>
+		<result property="website" column="a_scene_website"/>
+		<result property="updateTime" column="a_scene_update_time"/>
+		<result property="lastTime" column="a_last_time"/>
+		<result property="status" column="a_status"/>
+		<result property="userId" column="update_user_id"/>
+	</resultMap>
+	
+	<!-- 添加审核版景点 -->
+	<insert id="addAuditScene">
+		insert into audit_scene 
+		values(#{audit.auditId},#{audit.sceneId},#{audit.path},#{audit.title},#{audit.content},#{audit.rule},
+		#{audit.openTime},#{audit.traffic},#{audit.ticket},#{audit.costTime},#{audit.phone},#{audit.website},
+		#{audit.userId},#{audit.updateTime},#{audit.lastTime},#{audit.status})
+	</insert>
+	
+	<!-- 更新景点状态 -->
+	<update id="updateSceneStatus">
+		update audit_scene
+		set a_status=#{status},a_last_time=#{time}
+		where a_id=#{auditId}
+	</update>
+	
+	<!-- 查找所有未审核的景点 -->
+	<select id="findAllNotAuditScene" resultMap="sceneMap">
+		select * from audit_scene where a_status=0
+	</select>
+	
+	<!-- 分页查询 -->
+	<select id="findForPage" resultMap="sceneMap">
+		select * from audit_scene where a_status=0 limit #{param1},#{param2}
+	</select>
+	
+	<!-- 查询数量 -->
+	<select id="findSceneCount" resultType="java.lang.Integer">
+		select count(*) from audit_scene where a_status=0
+	</select>
+	
+	<select id="findAuditSceneById" resultMap="sceneMap">
+		select * from audit_scene where a_id=#{auditId}
+	</select>
+</mapper>

@@ -64,6 +64,69 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
+	<!-- ======================================================= -->
+<fieldset>
+	<h4>景点后台</h4>
+	<div class="audit_scene">
+		<table border="1" cellpadding="10">
+			<tr>
+			<td>change_status</td>
+			<td>audit_id</td>
+			<td>scene_id</td>
+			<td>a_scene_path</td>
+			<td>a_scene_title</td>
+			<td>a_scene_content</td>
+			<td>a_scene_rule</td>
+			<td>a_scene_open_time</td>
+			<td>a_scene_traffic</td>
+			<td>a_scene_ticket</td>
+			<td>a_scene_cost_time</td>
+			<td>a_scene_phone</td>
+			<td>a_scene_website</td>
+			<td>a_scene_update_time</td>
+			<td>user_id</td>
+			<td>status</td>
+			<td>time</td>
+			</tr>
+			<c:forEach items="${scenePage.list}" var="ascene">
+				<tr>
+				<td>
+					<a href="${ctx}/audit/scene/update?auditId=${ascene.auditId }&status=1">通过</a><br>
+					<a href="${ctx}/audit/scene/update?auditId=${ascene.auditId }&status=2">不通过</a>
+				</td>
+				<td>${ascene.auditId}</td>
+				<td>${ascene.sceneId }</td>
+				<td><a href="${ctx}/${ascene.path }" target="_blank">图片</a></td>
+				<td>${ascene.title }</td>
+				<td>${ascene.content }</td>
+				<td>${ascene.rule }</td>
+				<td>${ascene.openTime }</td>
+				<td>${ascene.traffic }</td>
+				<td>${ascene.ticket }</td>
+				<td>${ascene.costTime }</td>
+				<td>${ascene.phone }</td>
+				<td><a href="${ascene.website }" target="_blank">网址</a></td>
+				<td><fmt:formatDate type="both" value="${ascene.updateTime }"/></td>
+				<td>${ascene.userId }</td>
+				<td>${ascene.status }</td>
+				<td><fmt:formatDate type="both" value="${ascene.lastTime}"/></td>
+				</tr>
+			</c:forEach>
+		</table>
+	</div>
+	<div id="custom-page"  style="text-align:center;float:right;">
+		<div>共 &nbsp;${scenePage.totalCount }&nbsp;条数据 &nbsp;&nbsp;共 &nbsp;${scenePage.totalPageNum }&nbsp;页  &nbsp; &nbsp; &nbsp;</div>
+		<div>
+			<a href="${ctx }/audit/scene/list/1/">首页</a> 
+			<a href="${ctx }/audit/scene/list/${scenePage.prePageNum }" >上一页</a> 
+			<a href="${ctx }/audit/scene/list/${scenePage.nextPageNum }" >下一页</a> 
+			<a href="${ctx }/audit/scene/list/${scenePage.totalPageNum }">末页</a> 
+		</div>
+	</div>
+	<a href="${ctx}/recommend/scene/list">scene公开列表</a>
+</fieldset>
+
+	<!-- ======================================================= -->
 <fieldset>
 <h4>用户管理后台</h4>
 	<div class="audit_user">

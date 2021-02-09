@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhilv.recommend.scene.dao.SceneMapper">
+	<resultMap type="com.zhilv.entity.Scene" id="sceneMap">
+		<id property="sceneId" column="scene_id"/>
+		<result property="address" column="scene_address"/>
+		<result property="path" column="scene_path"/>
+		<result property="title" column="scene_title"/>
+		<result property="content" column="scene_content"/>
+		<result property="rule" column="scene_rule"/>
+		<result property="openTime" column="scene_open_time"/>
+		<result property="traffic" column="scene_traffic"/>
+		<result property="ticket" column="scene_ticket"/>
+		<result property="costTime" column="scene_cost_time"/>
+		<result property="phone" column="scene_phone"/>
+		<result property="website" column="scene_website"/>
+		<result property="latitude" column="scene_latitude"/>
+		<result property="longitude" column="scene_longitude"/>
+		<collection property="sceneUpdate" ofType="com.zhilv.entity.SceneUpdate">
+			<id property="updateId" column="update_id"/>
+			<result property="updateTime" column="update_time"/>
+			<association property="user" column="{userId=update_user_id}"
+			select="com.zhilv.user.dao.UserMapper.findUserByUserId"/>
+		</collection>
+	</resultMap>
+	<update id="updateScene">
+		update scene_detail
+		<set>
+			<if test="null != scene.path and !scene.path.equals('')">
+				scene_path=#{scene.path},
+			</if>
+			<if test="null != scene.title and !scene.title.equals('')">
+				scene_title=#{scene.title},
+			</if>
+			<if test="null != scene.content and !scene.content.equals('')">
+				scene_content=#{scene.content},
+			</if>
+			<if test="null != scene.rule and !scene.rule.equals('')">
+				scene_rule=#{scene.rule},
+			</if>
+			<if test="null != scene.openTime and !scene.openTime.equals('')">
+				scene_open_time=#{scene.openTime},
+			</if>
+			<if test="null != scene.traffic and !scene.traffic.equals('')">
+				scene_traffic=#{scene.traffic},
+			</if>
+			<if test="null != scene.ticket and !scene.ticket.equals('')">
+				scene_ticket=#{scene.ticket},
+			</if>
+			<if test="null != scene.costTime and !scene.costTime.equals('')">
+				scene_cost_time=#{scene.costTime},
+			</if>
+			<if test="null != scene.phone and !scene.phone.equals('')">
+				scene_phone=#{scene.phone},
+			</if>
+			<if test="null != scene.website and !scene.website.equals('')">
+				scene_website=#{scene.website},
+			</if>
+		</set>
+		where scene_id=#{scene.sceneId}
+	</update>
+	
+	<insert id="addSceneUpdateMsg">
+		insert into scene_update(update_user_id,update_scene_id,update_time)
+		values(#{userId},#{sceneId},#{updateTime})
+	</insert>
+	
+	<select id="findAllScene" resultMap="sceneMap">
+		select * from scene_detail d
+		left join scene_update u on d.scene_id=u.update_scene_id order by update_id desc
+	</select>
+	
+	<select id="findSceneByTitle" resultMap="sceneMap">
+		select * from scene_detail d
+		left join scene_update u on d.scene_id=u.update_scene_id 
+		where scene_title like concat('%',#{title},'%') or scene_address like concat('%',#{title},'%')
+		order by update_id desc
+	</select>
+
+</mapper>
