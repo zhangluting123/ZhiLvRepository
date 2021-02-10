@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.sun.org.apache.xml.internal.resolver.helpers.PublicId;
 import com.zhilv.entity.Scene;
 
 /**   
@@ -46,4 +47,12 @@ public interface SceneMapper {
 	 * @date: 2021年2月9日 下午1:06:20
 	 */
 	public List<Scene> findSceneByTitle(String title);
+	
+	/**
+	 * @Title: findSceneById
+	 * @Description: 根据ID值查找景点信息
+	 * @author: 张璐婷
+	 * @date: 2021年2月10日 下午3:12:20
+	 */
+	public Scene findSceneById(Integer sceneId);
 }

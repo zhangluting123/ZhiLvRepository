@@ -76,5 +76,11 @@
 		where scene_title like concat('%',#{title},'%') or scene_address like concat('%',#{title},'%')
 		order by update_id desc
 	</select>
+	
+	<select id="findSceneById" resultMap="sceneMap">
+		select * from scene_detail d
+		left join scene_update u on d.scene_id=u.update_scene_id 
+		where scene_id = #{sceneId}
+	</select>
 
 </mapper>

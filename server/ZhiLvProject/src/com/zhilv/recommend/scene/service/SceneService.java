@@ -61,4 +61,14 @@ public class SceneService {
 	public List<Scene> findSceneByTitle(String title){
 		return sceneMapper.findSceneByTitle(title);
 	}
+	
+	/**
+	 * @Title: findSceneById
+	 * @Description: 根据ID值查找景点信息
+	 * @author: 张璐婷
+	 * @date: 2021年2月10日 下午3:12:20
+	 */
+	public Scene findSceneById(Integer sceneId) {
+		return sceneMapper.findSceneById(sceneId);
+	}
 }

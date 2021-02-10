@@ -73,8 +73,7 @@ public class NotificationController {
 		if(null != userId && userId != -1) {
 			notification.setUserId(userId);
 		}
-//		int i = notificationService.addNotification(notification);
-		int i = 1;
+		int i = notificationService.addNotification(notification);
 		if(i > 0) {
 			System.out.println("通知添加成功");
 			return "OK";

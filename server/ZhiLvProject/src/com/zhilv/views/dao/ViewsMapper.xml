@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhilv.views.dao.ViewsMapper">
+	<resultMap type="com.zhilv.entity.Views" id="viewsMap">
+		<id property="viewsId" column="views_id"/>
+		<result property="time" column="views_time"/>
+		<association property="user" column="{userId=user_id}"
+			select="com.zhilv.user.dao.UserMapper.findUserByUserId">
+		</association>
+		<association property="travels" column="{travelsId=travels_id}"
+			select="com.zhilv.travels.dao.TravelsMapper.findTravelsById"/>
+		<association property="video" column="{videoId=video_id}"
+			select="com.zhilv.video.dao.VideoMapper.findVideoById"/>
+		<association property="scene" column="{sceneId=scene_id}"
+			select="com.zhilv.recommend.scene.dao.SceneMapper.findSceneById"/>
+	</resultMap>
+	
+	<insert id="addViews">
+		insert into action_views(user_id,views_time,
+		<if test="null != travelsId">
+			travels_id
+		</if>
+		<if test="null != videoId">
+			video_id
+		</if>
+		<if test="null != sceneId">
+			scene_id
+		</if>
+		)values(#{userId},#{time}, 
+		<if test="null != travelsId">
+			#{travelsId}
+		</if>
+		<if test="null != videoId">
+			#{videoId}
+		</if>
+		<if test="null != sceneId">
+			#{sceneId}
+		</if>
+		)
+	</insert>
+</mapper>
