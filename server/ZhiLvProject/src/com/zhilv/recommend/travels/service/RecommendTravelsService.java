@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.zhilv.entity.InterestLabel;
 import com.zhilv.recommend.travels.dao.RecommendTravelsMapper;
 
 /**
@@ -32,7 +33,7 @@ public class RecommendTravelsService {
 	 * @param userId
 	 * @return
 	 */
-	public List<String> findUserInterest(Integer userId){
+	public List<InterestLabel> findUserInterest(Integer userId){
 		return recommendTravelsMapper.findUserInterest(userId);
 	}
 

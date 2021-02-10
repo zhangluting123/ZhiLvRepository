@@ -5,6 +5,8 @@ package com.zhilv.recommend.travels.dao;
 
 import java.util.List;
 
+import com.zhilv.entity.InterestLabel;
+
 /**
  * @ClassName:RecommendTravelsMapper
  * @description:TODO
@@ -21,6 +23,6 @@ public interface RecommendTravelsMapper {
 	 * @param UserId
 	 * @return
 	 */
-	public List<String> findUserInterest(Integer UserId);
+	public List<InterestLabel> findUserInterest(Integer UserId);
 
 }

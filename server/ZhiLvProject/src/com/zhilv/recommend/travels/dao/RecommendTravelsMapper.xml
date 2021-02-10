@@ -15,7 +15,7 @@
 		WHERE label_id IN(
 			SELECT label_id
 			FROM user_interest
-			WHERE user_id=1
+			WHERE user_id=#{userId}
 		)
 	</select>
 	
