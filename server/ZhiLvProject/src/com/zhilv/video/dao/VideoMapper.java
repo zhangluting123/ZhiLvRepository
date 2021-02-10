@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.zhilv.entity.MoreDetail;
-import com.zhilv.entity.Travels;
 import com.zhilv.entity.Video;
 
 /**   

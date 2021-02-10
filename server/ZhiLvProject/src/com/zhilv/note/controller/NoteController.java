@@ -18,7 +18,6 @@ import com.zhilv.entity.Travels;
 import com.zhilv.entity.UserCollection;
 import com.zhilv.entity.UserGood;
 import com.zhilv.entity.Video;
-import com.zhilv.note.dao.NoteMapper;
 import com.zhilv.note.service.NoteService;
 import com.zhilv.travels.service.TravelsService;
 import com.zhilv.usercollection.service.CollectionService;

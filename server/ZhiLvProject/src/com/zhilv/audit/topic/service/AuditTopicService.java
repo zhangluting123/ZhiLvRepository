@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import com.zhilv.audit.topic.dao.AuditTopicMapper;

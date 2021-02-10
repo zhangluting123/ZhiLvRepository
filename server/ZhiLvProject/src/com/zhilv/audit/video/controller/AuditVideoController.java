@@ -1,7 +1,6 @@
 package com.zhilv.audit.video.controller;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -19,14 +18,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mysql.jdbc.log.Log;
 import com.zhilv.audit.video.service.AuditVideoService;
-import com.zhilv.entity.AuditTravels;
 import com.zhilv.entity.AuditVideo;
-import com.zhilv.entity.Img;
 import com.zhilv.entity.MoreDetail;
 import com.zhilv.entity.Topic;
-import com.zhilv.entity.Travels;
 import com.zhilv.entity.User;
 import com.zhilv.entity.Video;
 import com.zhilv.util.DateUtil;
