@@ -4,18 +4,17 @@
 package com.zhilv.recommend.travels.controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.jasper.tagplugins.jstl.core.Out;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.zhilv.entity.InterestLabel;
 import com.zhilv.entity.Note;
 import com.zhilv.entity.Travels;
@@ -76,10 +75,13 @@ public class RecommendTravelsController {
 	public String getRecommendList(@RequestParam("userId")Integer userId) {
 		List<User> similarityUsers = getSimilarUser(userId);
 		List<Note> recommendList = new ArrayList<>();
+		
 		recommendList.addAll(getPublishList(similarityUsers));
 		recommendList.addAll(getGoodList(similarityUsers));
 		recommendList.addAll(getCollectionList(similarityUsers));
-		
+		HashSet<Note> recommendNoRepeat= new HashSet(recommendList);
+		recommendList.clear();
+		recommendList.addAll(recommendNoRepeat);
 		if(recommendList.size()>0) {
 			Gson gson = new Gson();
 			String str = gson.toJson(recommendList);

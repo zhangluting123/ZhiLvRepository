@@ -29,6 +29,13 @@ public class SceneController {
 	@Resource
 	private SceneService sceneService;
 	
+	/**
+	 * 
+	 * @description:查询所有景点信息
+	 * @author :张梦如
+	 * @date:2021年2月13日
+	 * @return
+	 */
 	@RequestMapping(value="/list",method=RequestMethod.GET,produces="application/json;charset=utf-8")
 	public String list() {
 		List<Scene> list = sceneService.findAllScene();
@@ -41,7 +48,14 @@ public class SceneController {
 			return null;
 		}
 	}
-	
+	/**
+	 * 
+	 * @description:根据地点查询景点
+	 * @author :张梦如
+	 * @date:2021年2月13日
+	 * @param title
+	 * @return
+	 */
 	@RequestMapping(value="/place",method=RequestMethod.GET,produces="application/json;charset=utf-8")
 	public String findByPlace(@RequestParam("title")String title) {
 		List<Scene> list = sceneService.findSceneByTitle(title);
