@@ -20,6 +20,8 @@ import com.zhilv.entity.InterestLabel;
 import com.zhilv.entity.Note;
 import com.zhilv.entity.Travels;
 import com.zhilv.entity.User;
+import com.zhilv.entity.UserCollection;
+import com.zhilv.entity.UserGood;
 import com.zhilv.entity.Video;
 import com.zhilv.note.service.NoteService;
 import com.zhilv.recommend.travels.service.RecommendTravelsService;
@@ -88,7 +90,7 @@ public class RecommendTravelsController {
 //		similarityUsers.remove(userService.findUserByUserId(userId));
 		List<Note> noteList = new ArrayList<Note>();
 		for(int i=0;i<similarityUsers.size();i++) {
-			noteList = userList(similarityUsers.get(i).getUserId());
+			noteList = collectionList(similarityUsers.get(i).getUserId());
 		}
 		
 		
@@ -138,7 +140,7 @@ public class RecommendTravelsController {
 	
 	/**
 	 * 
-	 * @description:获取和当前用户相关的用户集合(没问题)
+	 * @description:获取和当前用户相关的用户集合
 	 * @author :张梦如
 	 * @date:2021年2月9日
 	 * @param userId
@@ -170,7 +172,7 @@ public class RecommendTravelsController {
 	
 	/**
 	 * 
-	 * @description:利用Jaccard公式计算用户兴趣相似度(没问题)
+	 * @description:利用Jaccard公式计算用户兴趣相似度
 	 * @author :张梦如
 	 * @date:2021年2月9日
 	 * @param userId1
@@ -245,7 +247,69 @@ public class RecommendTravelsController {
 		
 		return noteList;
 	}
+	/**
+	 * 
+	 * @description:根据userId获取用户收藏的note
+	 * @author :张梦如
+	 * @date:2021年2月13日
+	 * @param userId
+	 * @return
+	 */
+	@RequestMapping(value="/collectionlist",method=RequestMethod.GET, produces="application/json;charset=utf-8")
+	public List<Note> collectionList(@RequestParam("userId")Integer userId) {
+		List<UserCollection> list = collectionService.findAllCollection(userId);
+		List<Note> noteList = new ArrayList<Note>();
+		Note note = null;
+		for(int i = 0; i < list.size(); ++i) {
+			if(null != list.get(i).getTravels()) {
+				note = new Note();
+				note.setFlag(true);
+				note.setTime(list.get(i).getTime());
+				note.setTravels(list.get(i).getTravels());
+				noteList.add(note);
+			}else {
+				note = new Note();
+				note.setFlag(false);
+				note.setTime(list.get(i).getTime());
+				note.setVideo(list.get(i).getVideo());
+				noteList.add(note);
+			}
+		}
+		
+		return noteList;
+	}
 	
+	/**
+	 * 
+	 * @description:根据userId获取用户点赞的note
+	 * @author :张梦如
+	 * @date:2021年2月13日
+	 * @param userId
+	 * @return
+	 */
+	@RequestMapping(value="/goodlist",method=RequestMethod.GET, produces="application/json;charset=utf-8")
+	public List<Note> goodList(@RequestParam("userId")Integer userId) {
+		List<UserGood> list = goodService.findAllGood(userId);
+		List<Note> noteList = new ArrayList<Note>();
+		Note note = null;
+		for(int i = 0; i < list.size(); ++i) {
+			if(null != list.get(i).getTravels()) {
+				note = new Note();
+				note.setFlag(true);
+				note.setTime(list.get(i).getTime());
+				note.setTravels(list.get(i).getTravels());
+				noteList.add(note);
+			}else {
+				note = new Note();
+				note.setFlag(false);
+				note.setTime(list.get(i).getTime());
+				note.setVideo(list.get(i).getVideo());
+				noteList.add(note);
+			}
+		}
+		
+		return noteList;
+	}
 	
 
 }
