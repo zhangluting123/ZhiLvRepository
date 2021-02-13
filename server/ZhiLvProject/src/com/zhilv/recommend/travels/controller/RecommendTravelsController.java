@@ -15,12 +15,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.zhilv.entity.InterestLabel;
+import com.zhilv.entity.Note;
 import com.zhilv.entity.Travels;
 import com.zhilv.entity.User;
+import com.zhilv.entity.Video;
+import com.zhilv.note.service.NoteService;
 import com.zhilv.recommend.travels.service.RecommendTravelsService;
+//import com.zhilv.recommend.userInterestManagement.service.UserInterestManagementService;
 import com.zhilv.travels.service.TravelsService;
 import com.zhilv.user.service.UserService;
+import com.zhilv.usercollection.service.CollectionService;
+import com.zhilv.usergood.service.GoodService;
+import com.zhilv.util.SortUtil;
+import com.zhilv.video.service.VideoService;
 
 /**
  * @ClassName:RecommendTravelsController
@@ -41,6 +50,17 @@ public class RecommendTravelsController {
 	
 	@Resource
 	private TravelsService travelsService;
+	@Resource
+	private NoteService noteService;
+	@Resource
+	private VideoService videoService;
+	@Resource
+	private GoodService goodService;
+	@Resource
+	private CollectionService collectionService;
+//	@Resource
+//	private UserInterestManagementService userInterestManagementService;
+	
 	
 	/**
 	 * 
@@ -53,22 +73,33 @@ public class RecommendTravelsController {
 	//http://localhost:8080/ZhiLvProject/recommend/travels/test?userId=1
 	@RequestMapping(value = "/test",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
 	public String test(@RequestParam("userId")Integer userId) {
-		
+		//逻辑测试
 //		List<User> allUsers= userService.findAllUser();
-		List<Double> similarity = new ArrayList<Double>();
-		List<InterestLabel> interestLabels = recommendTravelsService.findUserInterest(userId);
-		List<InterestLabel> interestLabels2=recommendTravelsService.findUserInterest(2);
-		double similar= userSimilarity(interestLabels, interestLabels2);
-		similarity.add(similar);
+		//相似度计算测试
+//		List<Double> similarity = new ArrayList<Double>();
+//		List<InterestLabel> interestLabels = recommendTravelsService.findUserInterest(userId);
+//		List<InterestLabel> interestLabels2=recommendTravelsService.findUserInterest(2);
+//		double similar= userSimilarity(interestLabels, interestLabels2);
+//		similarity.add(similar);
 //		return similarity;
-		if(similarity.size()>0) {
+		//用户相似度测试
+		List<User> similarityUsers = getSimilarUser(userId);
+//		List<User> similarityUsers= userService.findAllUser();
+//		similarityUsers.remove(userService.findUserByUserId(userId));
+		List<Note> noteList = new ArrayList<Note>();
+		for(int i=0;i<similarityUsers.size();i++) {
+			noteList = userList(similarityUsers.get(i).getUserId());
+		}
+		
+		
+		if(noteList.size()>0) {
 			Gson gson = new Gson();
-			String str = gson.toJson(similarity);
+			String str = gson.toJson(noteList);
 			return str;
 		}else {
 			return null;
 		}
-		
+//		
 	}
 
 	
@@ -107,7 +138,7 @@ public class RecommendTravelsController {
 	
 	/**
 	 * 
-	 * @description:获取和当前用户相关的用户集合
+	 * @description:获取和当前用户相关的用户集合(没问题)
 	 * @author :张梦如
 	 * @date:2021年2月9日
 	 * @param userId
@@ -117,15 +148,20 @@ public class RecommendTravelsController {
 	@RequestMapping(value = "/getSimilarUser",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
 	public List<User> getSimilarUser(@RequestParam("userId")Integer userId){
 		List<User> allUsers=userService.findAllUser();
-		allUsers.remove(userService.findUserByUserId(userId));
+		for(int i=0;i<allUsers.size();i++) {
+			if(allUsers.get(i).getUserId()==userId) {
+				allUsers.remove(i);
+			}
+		}
 		List<User> similarUsers = new ArrayList<>();
 		List<InterestLabel> userInterest1 = recommendTravelsService.findUserInterest(userId);
 		for(int i = 0;i < allUsers.size(); i++)
 		{
 			List<InterestLabel> userInterest2=recommendTravelsService.findUserInterest(allUsers.get(i).getUserId());
-			
+			System.out.println(i);
 			if(userSimilarity(userInterest1, userInterest2)>0.0) {
 				similarUsers.add(allUsers.get(i));
+				System.out.println(userSimilarity(userInterest1, userInterest2));
 			}
 		}
 		
@@ -134,7 +170,7 @@ public class RecommendTravelsController {
 	
 	/**
 	 * 
-	 * @description:利用Jaccard公式计算用户兴趣相似度
+	 * @description:利用Jaccard公式计算用户兴趣相似度(没问题)
 	 * @author :张梦如
 	 * @date:2021年2月9日
 	 * @param userId1
@@ -144,7 +180,7 @@ public class RecommendTravelsController {
 	
 	//http://localhost:8080/ZhiLvProject/recommend/travels/userSimilarity?userId1=1&userId2=2
 	@RequestMapping(value = "/userSimilarity",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
-	public double userSimilarity(@RequestParam("userInterest1")List<InterestLabel> userInterest1,@RequestParam("userInterest2")List<InterestLabel> userInterest2) {
+	public double userSimilarity(List<InterestLabel> userInterest1,List<InterestLabel> userInterest2) {
 		
 		System.out.println(userInterest1);
 		System.out.println(userInterest2);
@@ -176,6 +212,40 @@ public class RecommendTravelsController {
 		}
 		
 	}
+	
+	/**
+	 * 
+	 * @description:根据userId获取用户发布的note
+	 * @author :张梦如
+	 * @date:2021年2月11日
+	 * @param userId
+	 * @return
+	 */
+	@RequestMapping(value="/userlist",method=RequestMethod.GET,produces="application/json;charset=utf-8")
+	public List<Note> userList(Integer userId) {
+		List<Travels> list = travelsService.findTravelsByUserId(userId);
+		List<Video> videoList = videoService.findVideoByUserId(userId);
+		List<Note> noteList = new ArrayList<Note>();
+		for(Travels travels: list) {
+			Note note = new Note();
+			note.setFlag(true);
+			note.setTime(travels.getUploadTime());
+			note.setTravels(travels);
+			noteList.add(note);
+		}
+		for(Video video: videoList) {
+			Note note = new Note();
+			note.setFlag(false);
+			note.setTime(video.getUploadTime());
+			note.setVideo(video);
+			noteList.add(note);
+		}
+		//根据时间对note进行排序
+		SortUtil.sortList(noteList, "time", "DESC");
+		
+		return noteList;
+	}
+	
 	
 
 }
