@@ -60,82 +60,87 @@ public class RecommendTravelsController {
 	private GoodService goodService;
 	@Resource
 	private CollectionService collectionService;
-//	@Resource
-//	private UserInterestManagementService userInterestManagementService;
+
 	
 	
 	/**
 	 * 
-	 * @description:TODO
+	 * @description:用户协同过滤算法，获取推荐列表
 	 * @author :张梦如
 	 * @date:2021年2月10日
 	 * @param userId
 	 * @return
 	 */
-	//http://localhost:8080/ZhiLvProject/recommend/travels/test?userId=1
-	@RequestMapping(value = "/test",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
-	public String test(@RequestParam("userId")Integer userId) {
-		//逻辑测试
-//		List<User> allUsers= userService.findAllUser();
-		//相似度计算测试
-//		List<Double> similarity = new ArrayList<Double>();
-//		List<InterestLabel> interestLabels = recommendTravelsService.findUserInterest(userId);
-//		List<InterestLabel> interestLabels2=recommendTravelsService.findUserInterest(2);
-//		double similar= userSimilarity(interestLabels, interestLabels2);
-//		similarity.add(similar);
-//		return similarity;
-		//用户相似度测试
+	//http://localhost:8080/ZhiLvProject/recommend/travels/getRecommendList?userId=1
+	@RequestMapping(value = "/getRecommendList",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
+	public String getRecommendList(@RequestParam("userId")Integer userId) {
 		List<User> similarityUsers = getSimilarUser(userId);
-//		List<User> similarityUsers= userService.findAllUser();
-//		similarityUsers.remove(userService.findUserByUserId(userId));
-		List<Note> noteList = new ArrayList<Note>();
-		for(int i=0;i<similarityUsers.size();i++) {
-			noteList = collectionList(similarityUsers.get(i).getUserId());
-		}
+		List<Note> recommendList = new ArrayList<>();
+		recommendList.addAll(getPublishList(similarityUsers));
+		recommendList.addAll(getGoodList(similarityUsers));
+		recommendList.addAll(getCollectionList(similarityUsers));
 		
-		
-		if(noteList.size()>0) {
+		if(recommendList.size()>0) {
 			Gson gson = new Gson();
-			String str = gson.toJson(noteList);
+			String str = gson.toJson(recommendList);
 			return str;
 		}else {
 			return null;
-		}
-//		
+		}	
 	}
 
 	
 	/**
 	 * 
-	 * @description:查询相关用户发布的游记
+	 * @description:获取相关用户发布的游记
 	 * @author :张梦如
 	 * @date:2021年2月9日
-	 * @param userId
+	 * @param users
 	 * @return
 	 */
-	//http://localhost:8080/ZhiLvProject/recommend/travels/similarityUserPublish?userId=1
-	@RequestMapping(value = "/similarityUserPublish",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
-	public String similarityUserPublish(@RequestParam("UserId")Integer userId){
-		
-		List<User> similarityUsers = getSimilarUser(userId);
-		List<Travels> publishTravels = new ArrayList<>();
-		List<Travels> travels;
-		for(int i = 0;i<similarityUsers.size();i++) {
-			travels = travelsService.findTravelsByUserId(similarityUsers.get(i).getUserId());
-			for(int j = 0;j<travels.size();j++) {
-				publishTravels.add(travels.get(i));
-			}
+	//http://localhost:8080/ZhiLvProject/recommend/travels/getPublishList
+	@RequestMapping(value = "/getPublishList",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
+	public List<Note> getPublishList(List<User> users){
+		List<Note> publishList=new ArrayList<>();
+		for(int i=0;i<users.size();i++) {
+			publishList.addAll(userList(users.get(i).getUserId()));
 		}
-		
-		if(publishTravels.size()>0) {
-			Gson gson = new Gson();
-			String str = gson.toJson(publishTravels);
-			return str;
-		}else {
-			return null;
+		return publishList;
+	}
+
+	/**
+	 * 
+	 * @description:获取相关用户点赞列表
+	 * @author :张梦如
+	 * @date:2021年2月13日
+	 * @param users
+	 * @return
+	 */
+	//http://localhost:8080/ZhiLvProject/recommend/travels/getGoodList
+	@RequestMapping(value = "/getGoodList",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
+	public List<Note> getGoodList(List<User> users){
+		List<Note> userGoodList = new ArrayList<Note>();
+		for(int i=0;i<users.size();i++) {
+			userGoodList.addAll(goodList(users.get(i).getUserId()));
 		}
-		
-		
+		return userGoodList;
+	}
+	/**
+	 * 
+	 * @description:获取相关用户收藏的列表
+	 * @author :张梦如
+	 * @date:2021年2月13日
+	 * @param users
+	 * @return
+	 */
+	//http://localhost:8080/ZhiLvProject/recommend/travels/getCollectionList
+	@RequestMapping(value = "/getCollectionList",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
+	public List<Note> getCollectionList(List<User> users){
+		List<Note> userCollectionList = new ArrayList<Note>();
+		for(int i=0;i<users.size();i++) {
+			userCollectionList.addAll(collectionList(users.get(i).getUserId()));
+		}
+		return userCollectionList;
 	}
 	
 	/**
