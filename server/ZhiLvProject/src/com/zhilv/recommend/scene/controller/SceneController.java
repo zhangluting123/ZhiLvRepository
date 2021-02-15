@@ -32,7 +32,7 @@ public class SceneController {
 	/**
 	 * 
 	 * @description:查询所有景点信息
-	 * @author :张梦如
+	 * @author :张璐婷
 	 * @date:2021年2月13日
 	 * @return
 	 */
@@ -51,7 +51,7 @@ public class SceneController {
 	/**
 	 * 
 	 * @description:根据地点查询景点
-	 * @author :张梦如
+	 * @author :张璐婷
 	 * @date:2021年2月13日
 	 * @param title
 	 * @return
