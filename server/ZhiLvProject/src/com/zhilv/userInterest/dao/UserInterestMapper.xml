@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhilv.userInterest.dao.UserInterestMapper">
+	<resultMap type="com.zhilv.entity.UserInterest" id="interestMap">
+		<id property="interestId" column="interest_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="labelId" column="label_id"/>
+		<result property="weight" column="weight"/>
+	</resultMap>
+	
+	<resultMap type="com.zhilv.entity.MoreDetail" id="detailMap">
+		<id property="moreId" column="more_id"/>
+		<result property="destination" column="more_destination"/>
+		<result property="traffic" column="more_traffic"/>
+		<result property="beginDate" column="more_begin_date"/>
+		<result property="days" column="more_days"/>
+		<result property="people" column="more_people"/>
+		<result property="money" column="more_money"/>
+		<result property="travelsId" column="travels_id"/>
+		<result property="videoId" column="video_id"/>
+	</resultMap>
+	
+	<insert id="addInterest">
+		insert into user_interest(user_id,label_id,weight)
+		values(#{userId},#{labelId},#{weight}) 
+	</insert>
+	
+	<select id="findInterestByUserIdAndLabelId" resultMap="interestMap">
+		select * from user_interest 
+		where user_id=#{userId} and label_id=#{labelId}
+	</select>
+	
+	<update id="updateWeightByInterestId">
+		update user_interest
+		set weight= weight + #{weight}
+		where interest_id=#{interestId}
+	</update>
+	
+	<delete id="deleteInterestById">
+		delete from user_interest
+		where interest_id=#{interestId}
+	</delete>
+	
+	<select id="findMoreDetailByTidOrVid" resultMap="detailMap">
+		select * from more_detail
+		where
+		<if test="null != travelsId and !travelsId.equals('')">
+			travels_id=#{travelsId}
+		</if>
+		<if test="null != videoId and !videoId.equals('')">
+			video_id=#{videoId}
+		</if>
+	</select>
+	
+	<select id="findLabelIdByName" resultType="java.lang.Integer">
+		select label_id from interest_label
+		where label_name like concat('%',#{name},'%')
+	</select>
+</mapper>
+
+
+
+

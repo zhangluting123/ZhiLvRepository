@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zhilv.entity.MoreDetail;
+import com.zhilv.entity.UserInterest;
+import com.zhilv.userInterest.service.UserInterestService;
 import com.zhilv.usercollection.service.CollectionService;
 import com.zhilv.util.DateUtil;
 
@@ -22,6 +25,8 @@ public class CollectionController {
 	
 	@Resource
 	private CollectionService collectionService;
+	@Resource
+	private UserInterestService UserInterestService;
 	
 	@RequestMapping(value="/ifCollect",method=RequestMethod.GET)
 	public String IfCollect(@RequestParam(value="userId",required=true)Integer userId,
@@ -41,6 +46,21 @@ public class CollectionController {
 			@RequestParam(value="travelsId",required=false)Integer travelsId) {
 		int i = collectionService.addCollection(userId, travelsId, videoId, DateUtil.getCurrentTimes());
 		if(i > 0) {
+			MoreDetail moreDetail = UserInterestService.findMoreDetailByTidOrVid(travelsId, videoId);
+			int labelId = UserInterestService.findLabelIdByName(moreDetail.getDestination());
+			//查询是否存在兴趣记录
+			UserInterest uInterest = UserInterestService.findInterestByUserIdAndLabelId(userId, labelId);
+			if(null != uInterest) {//如果有记录
+				int j = UserInterestService.updateWeightByInterestId(uInterest.getInterestId(), 4);
+				if(j > 0) {
+					System.out.println("weight更新成功");
+				}
+			}else {
+				int j = UserInterestService.addInterest(userId, labelId, 3);
+				if(j > 0) {
+					System.out.println("weight添加成功");
+				}
+			}
 			return "OK";
 		}else {
 			return "ERROR";
@@ -53,6 +73,26 @@ public class CollectionController {
 			@RequestParam(value="travelsId",required=false)Integer travelsId) {
 		int i = collectionService.deleteCollection(userId, travelsId, videoId);
 		if(i > 0) {
+			MoreDetail moreDetail = UserInterestService.findMoreDetailByTidOrVid(travelsId, videoId);
+			int labelId = UserInterestService.findLabelIdByName(moreDetail.getDestination());
+			//查询是否存在兴趣记录
+			UserInterest uInterest = UserInterestService.findInterestByUserIdAndLabelId(userId, labelId);
+			if(null != uInterest) {//如果有记录
+				if(uInterest.getWeight() > 3) {
+					int j = UserInterestService.updateWeightByInterestId(uInterest.getInterestId(), -4);
+					if(j > 0) {
+						System.out.println("weight更新成功");
+					}
+				}else {
+					int j = UserInterestService.deleteInterestById(uInterest.getInterestId());
+					if(j > 0) {
+						System.out.println("userInterest删除成功");
+					}
+				}
+				
+			}else {
+				System.out.println("没有userInterest记录");
+			}
 			return "OK";
 		}else {
 			return "ERROR";

@@ -9,6 +9,11 @@
 <title>Insert title here</title>
 </head>
 <body>
+		
+	<a href="${ctx }/views/add?userId=4&travelsId=9">浏览travels</a>
+	<a href="${ctx }/views/add?userId=4&videoId=10">浏览video</a>
+	<a href="${ctx }/views/add?userId=4&sceneId=1">浏览scene</a>
+	<br>
 	<a href="${ctx }/audit/scene/list/1">景点管理界面</a>
 	<br>
 	<a href="${ctx }/audit/user/list/1">用户管理界面</a>
@@ -64,7 +69,6 @@
 	<a href="${ctx }/good/ifGood?userId=4&videoId=10">是否点赞</a>
 	<a href="${ctx }/good/delete?userId=4&travelsId=9">删除travels点赞</a>
 	<a href="${ctx }/note/goodlist?userId=4">查询点赞列表</a>
-	
 	<br>
 	<a href="${ctx }/collection/add?userId=4&videoId=10">添加video收藏</a>
 	<a href="${ctx }/collection/add?userId=4&travelsId=9">添加travels收藏</a>

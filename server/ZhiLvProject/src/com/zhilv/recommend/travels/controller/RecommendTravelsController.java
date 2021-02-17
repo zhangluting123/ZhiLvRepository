@@ -32,6 +32,8 @@ import com.zhilv.usergood.service.GoodService;
 import com.zhilv.util.SortUtil;
 import com.zhilv.video.service.VideoService;
 
+import sun.tools.jar.resources.jar;
+
 /**
  * @ClassName:RecommendTravelsController
  * @description:TODO
@@ -79,9 +81,7 @@ public class RecommendTravelsController {
 		recommendList.addAll(getPublishList(similarityUsers));
 		recommendList.addAll(getGoodList(similarityUsers));
 		recommendList.addAll(getCollectionList(similarityUsers));
-		HashSet<Note> recommendNoRepeat= new HashSet(recommendList);
-		recommendList.clear();
-		recommendList.addAll(recommendNoRepeat);
+		recommendList = removeRepeat(recommendList);
 		if(recommendList.size()>0) {
 			Gson gson = new Gson();
 			String str = gson.toJson(recommendList);
@@ -318,5 +318,47 @@ public class RecommendTravelsController {
 		return noteList;
 	}
 	
+	
+	public List<Note> removeRepeat(List<Note> recommendList){
+		List<Integer> travelsIdList = new ArrayList<Integer>();
+		List<Integer> videoIdList = new ArrayList<Integer>();
+		int j = -1;
+		boolean flag;
+		for(int i = 0; i < recommendList.size(); ++i) {
+			flag = false;
+			boolean b = recommendList.get(i).isFlag();
+			if(b && travelsIdList.size() <= 0) {
+				travelsIdList.add(recommendList.get(i).getTravels().getTravelsId());
+			}else if(b && travelsIdList.size() > 0) {
+				for(j = 0; j < travelsIdList.size(); ++j) {
+					if(travelsIdList.get(j) == recommendList.get(i).getTravels().getTravelsId()) {
+						recommendList.remove(i);
+						i--;
+						flag = true;
+						break;
+					}
+				}
+				if(j >= travelsIdList.size() && !flag) {
+					travelsIdList.add(recommendList.get(i).getTravels().getTravelsId());
+				}
+			}else if(!b && recommendList.size() <= 0) {
+				videoIdList.add(recommendList.get(i).getVideo().getVideoId());
+			}else {
+				for(j = 0; j < videoIdList.size(); ++j) {
+					if(videoIdList.get(j) == recommendList.get(i).getVideo().getVideoId()) {
+						recommendList.remove(i);
+						i--;
+						flag = true;
+						break;
+					}
+				}
+				if(j >= videoIdList.size() && !flag) {
+					videoIdList.add(recommendList.get(i).getVideo().getVideoId());
+				}
+			}
+			
+		}
+		return recommendList;
+	}
 
 }
