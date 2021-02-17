@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.zhilv.entity.InterestLabel;
 import com.zhilv.entity.Note;
 import com.zhilv.entity.Travels;
@@ -83,7 +84,7 @@ public class RecommendTravelsController {
 		recommendList.addAll(getCollectionList(similarityUsers));
 		recommendList = removeRepeat(recommendList);
 		if(recommendList.size()>0) {
-			Gson gson = new Gson();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 			String str = gson.toJson(recommendList);
 			return str;
 		}else {
