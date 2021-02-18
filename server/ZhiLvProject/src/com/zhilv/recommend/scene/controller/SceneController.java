@@ -41,15 +41,18 @@ public class SceneController {
 	 */
 	// http://localhost:8080/ZhiLvProject/recommend/scene/getRecommendList?userId=6
 	@RequestMapping(value="/getRecommendList",method=RequestMethod.GET,produces="application/json;charset=utf-8")
-	public String getRecommendList(@RequestParam("userId")Integer userId) {
+	public String getRecommendList(@RequestParam(value="userId",required=false)Integer userId) {
 		List<Scene> recommendList = new ArrayList<Scene>();
+		if(null != userId) {
+			List<Scene> userInterestList = getSceneByUserInterest(userId);
+			recommendList.addAll(userInterestList);
+		}
 		List<Scene> randomList = recommendRandom();
-		List<Scene> userInterestList = getSceneByUserInterest(userId);
-		recommendList.addAll(userInterestList);
 		recommendList.addAll(randomList);
 		recommendList = removeRepeat(recommendList);
+		recommendList = screenUser(recommendList);
 		if(recommendList.size()>0) {
-			Gson gson=new Gson();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 			String str = gson.toJson(recommendList);
 			return str;
 		}else {
@@ -67,7 +70,7 @@ public class SceneController {
 	public List<Scene> getSceneByUserInterest(Integer userId){
 		List<Scene> scenesList = new ArrayList<Scene>();
 		List<InterestLabel> userInterest = sceneService.findUserInterest(userId);
-		System.out.println(userInterest);
+//		System.out.println(userInterest);
 		for(int i = 0; i<userInterest.size();i++) {
 			scenesList.addAll(findByAddress(userInterest.get(i).getLabelName()));
 		}
@@ -100,7 +103,6 @@ public class SceneController {
 	 */
 	public List<Scene> findByAddress(String title) {
 		List<Scene> list = sceneService.findSceneByTitle(title);
-		list = screenUser(list);
 		return list;
 	}
 	
@@ -156,7 +158,7 @@ public class SceneController {
 		list = screenUser(list);
 		if(list.size() > 0) {
 			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-			String str = gson.toJson(list);System.out.println();
+			String str = gson.toJson(list);
 			return str;
 		}else {
 			return null;

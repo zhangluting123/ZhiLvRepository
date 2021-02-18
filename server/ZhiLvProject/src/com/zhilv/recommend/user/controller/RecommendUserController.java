@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,7 +40,7 @@ public class RecommendUserController {
 	 */
 	//http://localhost:8080/ZhiLvProject/recommend/user/getRecommendList?userId=6
 	@RequestMapping(value="/getRecommendList",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
-	public String getRecommendList(@RequestParam("userId")Integer userId) {
+	public String getRecommendList(@RequestParam(value="userId",required=false)Integer userId) {
 		List<User> recommendList = new ArrayList<User>();
 		List<User> recommendList1 = list(userId);
 		List<User> recommendList2 = recommendByCommonFolled(userId);
@@ -49,7 +48,8 @@ public class RecommendUserController {
 		recommendList.addAll(recommendList1);
 		recommendList.addAll(recommendList2);
 		recommendList.addAll(recommendList3);
-		
+		recommendList = removeAttention(recommendList, userId);
+		recommendList = removeRepeat(recommendList);
 		if(recommendList.size()>0) {
 			Gson gson=new Gson();
 			String str = gson.toJson(recommendList);
@@ -72,35 +72,6 @@ public class RecommendUserController {
 	
 	public List<User> list(Integer userId) {
 		List<User> list = recommendUserService.findRecommendUser(userId);//4 5
-		list = removeRepeat(list, userId);
-//		List<User> attenList = userService.findFollowed(userId);//4 6
-//	
-//		for(int i = 0; i < list.size(); ++i) {
-//			System.out.println(i+"======");
-//			if(list.get(i).getUserId() == userId) {
-//				System.out.println(i+"-----"+list.get(i).getUserId());
-//				list.remove(i);
-//				i--;
-//			}else {
-//				for(int j = 0; j < attenList.size(); ++j) {
-//					if(list.get(i).getUserId()== attenList.get(j).getUserId()) {
-//						list.remove(i);
-//						i--;
-//						break;
-//					}
-//				}
-//			}
-//			
-//		}
-
-//		if(list.size() > 0) {
-//			Gson gson = new Gson();
-////			Gson gson2 = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-//			String str = gson.toJson(list);
-//			return str;
-//		}else {
-//			return null;
-//		}
 		
 		return list;
 	}
@@ -125,22 +96,14 @@ public class RecommendUserController {
 				
 			}
 		}
-		allUsers = removeRepeat(allUsers, userId);
 		
 		return allUsers;
-//		if(allUsers.size()>0) {
-//			Gson gson=new Gson();
-//			String str = gson.toJson(allUsers);
-//			return str;
-//		}else {
-//			return null;
-//		}
 		
 		
 	}
 	
 	/**
-	 * @description:根据用户年龄推荐好友，解决系统冷启动问题
+	 * @description:根据用户年龄推荐好友
 	 * @author :张梦如
 	 * @date:2021年2月6日
 	 * @param userId
@@ -150,17 +113,10 @@ public class RecommendUserController {
 	public List<User> recommendUserByAge(Integer userId) {
 		User presentUser=userService.findUserByUserId(userId);
 		List<User> recommendList = recommendUserService.recommendUserByAge(presentUser.getBirth());
-		recommendList=removeRepeat(recommendList, userId);
 		
 		return recommendList;
-//		if(recommendList.size()>0) {
-//			Gson gson = new Gson();
-//			String str = gson.toJson(recommendList);
-//			return str;
-//		}else {
-//			return null;
-//		}
 	}
+	
 	
 	/**
 	 * 
@@ -174,7 +130,7 @@ public class RecommendUserController {
 
 	public double commonFollowedNum(List<User> list1,List<User> list2) {
 		int common=0;
-		double rate;
+		double rate = 0;
 		for(int i = 0;i<list1.size();i++) {
 			for(int j = 0;j<list2.size();j++) {
 				if(list1.get(i).getUserId()==list2.get(j).getUserId()) {
@@ -182,7 +138,12 @@ public class RecommendUserController {
 				}
 			}
 		}
-		rate=common/(list1.size()+list2.size()-common);
+		System.out.println(list1.size()+"---"+list2.size()+"----"+common);
+		double d = list1.size()+list2.size()-common;
+		if(d != 0) {
+			rate=common/d;
+		}
+		
 		return rate;
 	}
 	
@@ -196,14 +157,14 @@ public class RecommendUserController {
 	 * @return
 	 */
 
-	public List<User> removeRepeat(List<User> recommendUser,Integer userId){
+	public List<User> removeAttention(List<User> recommendUser,Integer userId){
 		
 		List<User> attenList = userService.findFollowed(userId);//4 6
 		List<User> list=recommendUser;
 		for(int i = 0; i < list.size(); ++i) {
 //			System.out.println(i+"======");
 			if(list.get(i).getUserId() == userId) {
-				System.out.println(i+"-----"+list.get(i).getUserId());
+//				System.out.println(i+"-----"+list.get(i).getUserId());
 				list.remove(i);
 				i--;
 			}else {
@@ -220,6 +181,32 @@ public class RecommendUserController {
 		return list;
 	}
 	
-	
+	/**
+	 * @Title: removeRepeat
+	 * @Description: 去掉重复用户
+	 * @author: 张璐婷
+	 * @date: 2021年2月18日 下午6:51:36
+	 */
+	public List<User> removeRepeat(List<User> recommendUser){
+		List<Integer> userIdList = new ArrayList<>();
+		if(recommendUser.size() > 0) {
+			userIdList.add(recommendUser.get(0).getUserId());
+		}
+		for(int i = 1; i < recommendUser.size(); ++i) {
+			boolean flag = false;
+			for(int j = 0; j < userIdList.size(); ++j) {
+				if(recommendUser.get(i).getUserId() == userIdList.get(j)) {
+					recommendUser.remove(i);
+					i--;
+					flag = true;
+					break;
+				}
+			}
+			if(!flag) {
+				userIdList.add(recommendUser.get(i).getUserId());
+			}
+		}
+		return recommendUser;
+	}
 	
 }
