@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.zhilv.entity.InterestLabel;
 import com.zhilv.entity.Scene;
 
 /**   
@@ -15,6 +16,14 @@ import com.zhilv.entity.Scene;
  */
 public interface SceneMapper {
 
+	/**
+	 * @description:查找用户兴趣列表
+	 * @author :张梦如
+	 * @date:2021年2月18日
+	 * @param UserId
+	 * @return
+	 */
+	public List<InterestLabel> findUserInterest(Integer UserId);
 	/**
 	 * @Title: updateScene
 	 * @Description: 更新景点信息

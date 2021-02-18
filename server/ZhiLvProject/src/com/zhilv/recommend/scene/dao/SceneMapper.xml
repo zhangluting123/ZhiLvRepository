@@ -23,6 +23,25 @@
 			select="com.zhilv.user.dao.UserMapper.findUserByUserId"/>
 		</collection>
 	</resultMap>
+	
+	<resultMap type="com.zhilv.entity.InterestLabel" id="travelsMap">
+		<id property="labelId" column="label_id"/>
+		<result property="labelName" column="label_name"/>
+		<result property="labelType" column="label_type"/>
+	</resultMap>
+	
+	<!-- 查找用户兴趣集合  -->
+	<select id="findUserInterest" resultMap="travelsMap">
+		SELECT label_name
+		FROM interest_label
+		WHERE label_type='地区' and label_id IN(
+			SELECT label_id
+			FROM user_interest
+			WHERE user_id=#{userId}
+		)
+	</select>
+	
+	
 	<update id="updateScene">
 		update scene_detail
 		<set>

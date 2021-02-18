@@ -1,7 +1,9 @@
 package com.zhilv.recommend.scene.controller;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.zhilv.entity.InterestLabel;
 import com.zhilv.entity.Scene;
 import com.zhilv.recommend.scene.service.SceneService;
 
@@ -29,6 +32,97 @@ public class SceneController {
 	@Resource
 	private SceneService sceneService;
 	
+	/**
+	 * @description:生成景点推荐列表
+	 * @author :张梦如
+	 * @date:2021年2月18日
+	 * @param UserId
+	 * @return
+	 */
+	// http://localhost:8080/ZhiLvProject/recommend/scene/getRecommendList?userId=6
+	@RequestMapping(value="/getRecommendList",method=RequestMethod.GET,produces="application/json;charset=utf-8")
+	public String getRecommendList(@RequestParam("userId")Integer userId) {
+		List<Scene> recommendList = new ArrayList<Scene>();
+		List<Scene> randomList = recommendRandom();
+		List<Scene> userInterestList = getSceneByUserInterest(userId);
+		recommendList.addAll(userInterestList);
+		recommendList.addAll(randomList);
+		recommendList = removeRepeat(recommendList);
+		if(recommendList.size()>0) {
+			Gson gson=new Gson();
+			String str = gson.toJson(recommendList);
+			return str;
+		}else {
+			return null;
+		}
+		
+	}
+	/**
+	 * @description:查询用户兴趣列表
+	 * @author :张梦如
+	 * @date:2021年2月18日
+	 * @param userId
+	 * @return
+	 */
+	public List<Scene> getSceneByUserInterest(Integer userId){
+		List<Scene> scenesList = new ArrayList<Scene>();
+		List<InterestLabel> userInterest = sceneService.findUserInterest(userId);
+		System.out.println(userInterest);
+		for(int i = 0; i<userInterest.size();i++) {
+			scenesList.addAll(findByAddress(userInterest.get(i).getLabelName()));
+		}
+		return scenesList;
+	}
+	
+	/**
+	 * @description:随机推荐景点，解决系统冷启动问题
+	 * @author :张梦如
+	 * @date:2021年2月18日
+	 * @return
+	 */
+	
+	public List<Scene> recommendRandom(){
+		List<Scene> allScenes = sceneService.findAllScene();
+		List<Scene> ranList=new ArrayList<Scene>();
+		Random r = new Random();
+		for(int i=0;i<10;i++) {
+			int ran = r.nextInt(allScenes.size());
+			ranList.add(allScenes.get(ran));
+		}
+		return ranList;
+	}
+	/**
+	 * @description:根据地址查询景点
+	 * @author :张梦如
+	 * @date:2021年2月18日
+	 * @param title
+	 * @return
+	 */
+	public List<Scene> findByAddress(String title) {
+		List<Scene> list = sceneService.findSceneByTitle(title);
+		list = screenUser(list);
+		return list;
+	}
+	
+	/**
+	 * @description:去除列表中重复的景点
+	 * @author :张梦如
+	 * @date:2021年2月18日
+	 * @param scenes
+	 * @return
+	 */
+	public List<Scene> removeRepeat(List<Scene> scenes){
+		List<Integer> idList=new ArrayList<Integer>();
+		List<Scene> resultList = new ArrayList<Scene>();
+		for(int i=0 ; i<scenes.size() ;i++) {
+			if(idList.contains(scenes.get(i).getSceneId())==false) {
+				resultList.add(scenes.get(i));
+				idList.add(scenes.get(i).getSceneId());
+			}
+		}
+		
+		return resultList;
+	}
 	/**
 	 * 
 	 * @description:查询所有景点信息

@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.zhilv.entity.InterestLabel;
 import com.zhilv.entity.Scene;
 import com.zhilv.recommend.scene.dao.SceneMapper;
 
@@ -21,6 +22,16 @@ public class SceneService {
 
 	@Resource
 	private SceneMapper sceneMapper;
+	/**
+	 * @description:查找用户兴趣集合
+	 * @author :张梦如
+	 * @date:2021年2月18日
+	 * @param UserId
+	 * @return
+	 */
+	public List<InterestLabel> findUserInterest(Integer UserId){
+		return sceneMapper.findUserInterest(UserId);
+	}
 	
 	/**
 	 * @Title: updateScene

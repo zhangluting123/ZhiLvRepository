@@ -25,6 +25,7 @@ import com.zhilv.entity.UserGood;
 import com.zhilv.entity.Video;
 import com.zhilv.note.service.NoteService;
 import com.zhilv.recommend.travels.service.RecommendTravelsService;
+import com.zhilv.recommend.user.service.RecommendUserService;
 //import com.zhilv.recommend.userInterestManagement.service.UserInterestManagementService;
 import com.zhilv.travels.service.TravelsService;
 import com.zhilv.user.service.UserService;
@@ -48,6 +49,8 @@ public class RecommendTravelsController {
 	
 	@Resource
 	private RecommendTravelsService recommendTravelsService;
+	@Resource
+	private RecommendUserService recommendUserService;
 	
 	@Resource
 	private UserService userService;
@@ -77,6 +80,7 @@ public class RecommendTravelsController {
 	@RequestMapping(value = "/getRecommendList",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
 	public String getRecommendList(@RequestParam("userId")Integer userId) {
 		List<User> similarityUsers = getSimilarUser(userId);
+		similarityUsers.addAll(ageSimilarUser(userId));
 		List<Note> recommendList = new ArrayList<>();
 		
 		recommendList.addAll(getPublishList(similarityUsers));
@@ -176,6 +180,21 @@ public class RecommendTravelsController {
 		}
 		
 		return similarUsers;
+	}
+	/**
+	 * 
+	 * @description:获取年龄相仿的用户集合
+	 * @author :张梦如
+	 * @date:2021年2月18日
+	 * @param userId
+	 * @return
+	 */
+	public List<User> ageSimilarUser(Integer userId){
+		User presentUser=userService.findUserByUserId(userId);
+		List<User> similarUsers = recommendUserService.recommendUserByAge(presentUser.getBirth());
+		similarUsers.remove(presentUser);
+		return similarUsers;
+		
 	}
 	
 	/**

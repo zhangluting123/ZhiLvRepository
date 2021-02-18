@@ -56,7 +56,7 @@ public class CollectionController {
 					System.out.println("weight更新成功");
 				}
 			}else {
-				int j = UserInterestService.addInterest(userId, labelId, 3);
+				int j = UserInterestService.addInterest(userId, labelId, 4);
 				if(j > 0) {
 					System.out.println("weight添加成功");
 				}
@@ -78,7 +78,7 @@ public class CollectionController {
 			//查询是否存在兴趣记录
 			UserInterest uInterest = UserInterestService.findInterestByUserIdAndLabelId(userId, labelId);
 			if(null != uInterest) {//如果有记录
-				if(uInterest.getWeight() > 3) {
+				if(uInterest.getWeight() > 4) {
 					int j = UserInterestService.updateWeightByInterestId(uInterest.getInterestId(), -4);
 					if(j > 0) {
 						System.out.println("weight更新成功");
