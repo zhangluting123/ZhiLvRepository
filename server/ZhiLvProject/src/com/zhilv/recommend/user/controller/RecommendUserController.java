@@ -1,5 +1,6 @@
 package com.zhilv.recommend.user.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -30,6 +31,34 @@ public class RecommendUserController {
 	@Resource
 	private UserService userService;
 
+	/**
+	 * 
+	 * @description:生成最后的用户推荐列表
+	 * @author :张梦如
+	 * @date:2021年2月18日
+	 * @param userId
+	 * @return
+	 */
+	//http://localhost:8080/ZhiLvProject/recommend/user/getRecommendList?userId=6
+	@RequestMapping(value="/getRecommendList",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
+	public String getRecommendList(@RequestParam("userId")Integer userId) {
+		List<User> recommendList = new ArrayList<User>();
+		List<User> recommendList1 = list(userId);
+		List<User> recommendList2 = recommendByCommonFolled(userId);
+		List<User> recommendList3 = recommendUserByAge(userId);
+		recommendList.addAll(recommendList1);
+		recommendList.addAll(recommendList2);
+		recommendList.addAll(recommendList3);
+		
+		if(recommendList.size()>0) {
+			Gson gson=new Gson();
+			String str = gson.toJson(recommendList);
+			return str;
+		}else {
+			return null;
+		}
+		
+	}
 	
 	/**
 	 * 
@@ -40,9 +69,8 @@ public class RecommendUserController {
 	 * @return
 	 */
 	
-	//http://localhost:8080/ZhiLvProject/recommend/user/list?userId=6
-	@RequestMapping(value = "/list",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
-	public String list(@RequestParam("userId")Integer userId) {
+	
+	public List<User> list(Integer userId) {
 		List<User> list = recommendUserService.findRecommendUser(userId);//4 5
 		list = removeRepeat(list, userId);
 //		List<User> attenList = userService.findFollowed(userId);//4 6
@@ -65,14 +93,16 @@ public class RecommendUserController {
 //			
 //		}
 
-		if(list.size() > 0) {
-			Gson gson = new Gson();
-//			Gson gson2 = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-			String str = gson.toJson(list);
-			return str;
-		}else {
-			return null;
-		}
+//		if(list.size() > 0) {
+//			Gson gson = new Gson();
+////			Gson gson2 = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+//			String str = gson.toJson(list);
+//			return str;
+//		}else {
+//			return null;
+//		}
+		
+		return list;
 	}
 	/**
 	 *
@@ -82,9 +112,8 @@ public class RecommendUserController {
 	 * @param userId
 	 * @return
 	 */
-	//http://localhost:8080/ZhiLvProject/recommend/user/recommendByCommonFollowed?userId=6
-	@RequestMapping(value = "/recommendByCommonFollowed",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
-	public String recommendByCommonFolled(@RequestParam("userId")Integer userId) {
+	
+	public List<User> recommendByCommonFolled(Integer userId) {
 		List<User> allUsers=userService.findAllUser();
 		List<User> followedList1=userService.findFollowed(userId);
 		double commonFollowed;
@@ -97,13 +126,15 @@ public class RecommendUserController {
 			}
 		}
 		allUsers = removeRepeat(allUsers, userId);
-		if(allUsers.size()>0) {
-			Gson gson=new Gson();
-			String str = gson.toJson(allUsers);
-			return str;
-		}else {
-			return null;
-		}
+		
+		return allUsers;
+//		if(allUsers.size()>0) {
+//			Gson gson=new Gson();
+//			String str = gson.toJson(allUsers);
+//			return str;
+//		}else {
+//			return null;
+//		}
 		
 		
 	}
@@ -115,32 +146,32 @@ public class RecommendUserController {
 	 * @param userId
 	 * @return
 	 */
-	//http://localhost:8080/ZhiLvProject/recommend/user/recommendUserByAge?userId=6
-	@RequestMapping(value = "/recommendUserByAge",method = RequestMethod.GET, produces = "application/json;charset=utf-8")
-	public String recommendUserByAge(@RequestParam("userId")Integer userId) {
+	
+	public List<User> recommendUserByAge(Integer userId) {
 		User presentUser=userService.findUserByUserId(userId);
 		List<User> recommendList = recommendUserService.recommendUserByAge(presentUser.getBirth());
 		recommendList=removeRepeat(recommendList, userId);
 		
-		if(recommendList.size()>0) {
-			Gson gson = new Gson();
-			String str = gson.toJson(recommendList);
-			return str;
-		}else {
-			return null;
-		}
+		return recommendList;
+//		if(recommendList.size()>0) {
+//			Gson gson = new Gson();
+//			String str = gson.toJson(recommendList);
+//			return str;
+//		}else {
+//			return null;
+//		}
 	}
 	
 	/**
 	 * 
-	 * @description:计算两个用户之间是否有共同关注的用户所占比例
+	 * @description:计算两个用户之间是共同关注的用户所占比例
 	 * @author :张梦如
 	 * @date:2021年2月5日
 	 * @param list1
 	 * @param list2
 	 * @return 返回比例值
 	 */
-	@RequestMapping(value = "/commonFolloweNum",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
+
 	public double commonFollowedNum(List<User> list1,List<User> list2) {
 		int common=0;
 		double rate;
@@ -164,8 +195,8 @@ public class RecommendUserController {
 	 * @param userId
 	 * @return
 	 */
-	@RequestMapping(value = "/removeRepeat",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
-	public List<User> removeRepeat(List<User> recommendUser,@RequestParam("userId")Integer userId){
+
+	public List<User> removeRepeat(List<User> recommendUser,Integer userId){
 		
 		List<User> attenList = userService.findFollowed(userId);//4 6
 		List<User> list=recommendUser;
