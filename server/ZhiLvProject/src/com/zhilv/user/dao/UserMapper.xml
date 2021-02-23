@@ -149,9 +149,9 @@
 	</delete>
 	
 	<!-- 根据用户名查询用户 -->
-	<select id="findUserByName" resultMap="userMap2">
-		select user_id,user_head,user_name,user_sex,user_birth,user_signature 
-		from user_detail where user_name =#{userName}
+	<select id="findUserByName" resultMap="userMap">
+		select * from user_detail 
+		where user_name like concat('%',#{userName},'%')
 	</select>
 	
 	<select id="findAllUser" resultMap="userMap2">
@@ -165,12 +165,19 @@
 	</delete>
 	
 	<!-- 分页查询 -->
-	<select id="findForPage" resultMap="userMap2">
-		select * from user_detail limit #{param1},#{param2}
+	<select id="findForPage" resultMap="userMap">
+		select * from user_detail 
+		<if test="null != userName and !userName.equals('')">
+			where user_name like concat('%',#{userName},'%')
+		</if>
+		limit #{start},#{size}
 	</select>
 	
 	<!-- 查询用户数量 -->
 	<select id="findCountUser" resultType="java.lang.Integer">
 		select count(*) from user_detail
+		<if test="null != userName and !userName.equals('')">
+			where user_name like concat('%',#{userName},'%')
+		</if>
 	</select>
 </mapper>

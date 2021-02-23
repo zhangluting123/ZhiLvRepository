@@ -88,16 +88,24 @@
 	</select>
 	
 	<!-- 分页查询 -->
+	<!-- 一对多查询先分页再左外连接 -->
 	<select id="findForPage" resultMap="atMap">
-		select * from audit_travels au
-		left join audit_more_detail m on au.a_id=m.a_id_travels
-		left join audit_img i on au.a_id=i.img_a_id
-		where au.a_status=0 limit #{param1},#{param2}
+		select * from audit_travels au 
+		left join audit_more_detail m on au.a_id=m.a_id_travels 
+		left join audit_img i on au.a_id=i.img_a_id 
+		where au.a_id in(
+		  select s.a_id from(
+		    select au2.a_id from audit_travels au2 
+		    group by au2.a_id
+		    order by au2.a_id desc
+		    limit #{param1},#{param2}
+		  )as s
+		)
 	</select>
 	
 	<!-- 查询总数量 -->
 	<select id="findTravelsCount" resultType="java.lang.Integer">
-		select count(*) from audit_travels where a_status=0
+		select count(*) from audit_travels 
 	</select>
 	
 </mapper>

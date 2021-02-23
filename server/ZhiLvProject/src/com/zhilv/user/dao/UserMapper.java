@@ -15,7 +15,7 @@ import com.zhilv.entity.User;
  * @date: 2021年1月17日 下午3:37:13       
  */
 public interface UserMapper {
-	
+
 	/**
 	 * @Title: findUserByPhone
 	 * @Description: 查询用户信息根据邮箱、电话或密码
@@ -103,7 +103,7 @@ public interface UserMapper {
 	 * @author: 张璐婷 
 	 * @date: 2021年2月2日 上午11:53:31
 	 */
-	public User findUserByName(String userName);
+	public List<User> findUserByName(String userName);
 	
 	/**
 	 * @Title: findAllUser
@@ -127,7 +127,7 @@ public interface UserMapper {
 	 * @author: 张璐婷 
 	 * @date: 2021年2月2日 下午7:55:28
 	 */
-	public List<User> findForPage(int startIndex, int pageSize);
+	public List<User> findForPage(@Param("userName")String userName,@Param("start")int startIndex, @Param("size")int pageSize);
 	
 	/**
 	 * @Title: findCountUser
@@ -135,5 +135,5 @@ public interface UserMapper {
 	 * @author: 张璐婷 
 	 * @date: 2021年2月2日 下午7:55:58
 	 */
-	public int findCountUser();
+	public int findCountUser(String userName);
 }

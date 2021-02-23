@@ -52,7 +52,7 @@ public class AuditVideoController {
 		page.setList(list);
 		page.setTotalCount(auditVideoService.findVideoCount());
 		model.addAttribute("videoPage",page);
-		return "index";
+		return "video-list";
 	}
 	
 	@ResponseBody
@@ -147,7 +147,7 @@ public class AuditVideoController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value="update",method=RequestMethod.GET)
+	@RequestMapping(value="update",method=RequestMethod.POST)
 	public String update(@RequestParam("auditId")Integer auditId,@RequestParam("status")Integer status) {
 		int i = auditVideoService.updateVideoStatus(auditId, status, DateUtil.getCurrentTimes());
 		String str = "OK";

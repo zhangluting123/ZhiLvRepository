@@ -30,17 +30,17 @@
 		
 	<!-- 查找所有未审核的话题 -->
 	<select id="findAllNotAuditTopic" resultMap="adtpMap">
-		select * from audit_topic where a_status=0
+		select * from audit_topic order by a_id desc
 	</select>
 	
 	<!-- 分页查询 -->
 	<select id="findForPage" resultMap="adtpMap">
-		select * from audit_topic where a_status=0 limit #{param1},#{param2}
+		select * from audit_topic order by a_id desc limit #{param1},#{param2}
 	</select>
 	
 	<!-- 查询数量 -->
 	<select id="findTopicCount" resultType="java.lang.Integer">
-		select count(*) from audit_topic where a_status=0
+		select count(*) from audit_topic 
 	</select>
 </mapper>
 

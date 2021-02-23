@@ -37,17 +37,17 @@
 	
 	<!-- 查找所有未审核的景点 -->
 	<select id="findAllNotAuditScene" resultMap="sceneMap">
-		select * from audit_scene where a_status=0
+		select * from audit_scene order by a_id desc
 	</select>
 	
 	<!-- 分页查询 -->
 	<select id="findForPage" resultMap="sceneMap">
-		select * from audit_scene where a_status=0 limit #{param1},#{param2}
+		select * from audit_scene order by a_id desc limit #{param1},#{param2}
 	</select>
 	
 	<!-- 查询数量 -->
 	<select id="findSceneCount" resultType="java.lang.Integer">
-		select count(*) from audit_scene where a_status=0
+		select count(*) from audit_scene 
 	</select>
 	
 	<select id="findAuditSceneById" resultMap="sceneMap">

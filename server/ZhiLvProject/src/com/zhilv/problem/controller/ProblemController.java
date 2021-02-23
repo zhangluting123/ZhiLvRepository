@@ -38,7 +38,7 @@ public class ProblemController {
 		page.setList(list);
 		page.setTotalCount(problemService.findCountProblem());
 		model.addAttribute("problemPage", page);
-		return "index";
+		return "problem-list";
 	}
 	
 	@ResponseBody

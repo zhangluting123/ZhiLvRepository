@@ -53,7 +53,7 @@ public class AuditTravelsController {
 		page.setList(list);
 		page.setTotalCount(auditTravelsService.findTravelsCount());
 		model.addAttribute("travelsPage",page);
-		return "index";
+		return "travels-list";
 	}
 	
 	/*
@@ -175,13 +175,14 @@ public class AuditTravelsController {
 	/**
 	 * @ 如果travelsId=null,则添加即可,否则查找指定游记并更新
 	 */
-	@RequestMapping(value="update",method=RequestMethod.GET)
+	@ResponseBody
+	@RequestMapping(value="update",method=RequestMethod.POST)
 	public String update(@RequestParam("auditId")Integer auditId,@RequestParam("status")Integer status) {
 		int i = auditTravelsService.updateTravelsStatus(auditId, status, DateUtil.getCurrentTimes());
+		String str = "OK";
 		if(i > 0) {
 			System.out.println("审核版游记状态更新成功");
 			if(status == 1) {
-				String str = null;
 				AuditTravels auditTravels = auditTravelsService.findAuditTravelsById(auditId);
 				Travels travels = new Travels();
 				travels.setTravelsId(auditTravels.getTravelsId());
@@ -210,7 +211,6 @@ public class AuditTravelsController {
 					}
 					j += travelsService.updateDetailTravelsIdById(travels.getTravelsId(), moreDetail.getMoreId());
 					if(j >= 3) {
-						str = "OK";
 						System.out.println("发布版游记添加成功");
 					}else {
 						str = "ERROR";
@@ -249,7 +249,6 @@ public class AuditTravelsController {
 					}
 					System.out.println("j="+j);
 					if(j > 0) {
-						str = "redirect:list/1";
 						System.out.println("发布版游记编辑成功");
 					}else {
 						str = "ERROR";
@@ -257,10 +256,10 @@ public class AuditTravelsController {
 					}
 				}
 			}
-			return "redirect:list/1";
+			return str;
 		}else {
 			System.out.println("审核版游记状态更新失败");
-			return "redirect:list/1";
+			return "ERROR";
 		}
 	}
 	

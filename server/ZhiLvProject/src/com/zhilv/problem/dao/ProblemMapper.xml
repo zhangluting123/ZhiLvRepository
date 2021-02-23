@@ -20,7 +20,7 @@
 	
 	<!-- 分页查询 -->
 	<select id="findForPage" resultMap="proMap">
-		select * from problem limit #{param1},#{param2}
+		select * from problem order by problem_id desc limit #{param1},#{param2}
 	</select>
 	
 	<select id="findCountProblem" resultType="java.lang.Integer">

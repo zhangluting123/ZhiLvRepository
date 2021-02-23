@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhilv.admin.dao.AdminMapper">
+	<!--  
+	<resultMap type="com.zhilv.entity.Admin" id="adminMap">
+		<id property="adminId" column="admin_id"/>
+		<result property="email" column="admin_email"/>
+		<result property="name" column="admin_name"/>
+		<result property="password" column="admin_password"/>
+	</resultMap>
+	-->
+	
+	<insert id="addAdmin">
+		insert into administrator(admin_email,admin_name,admin_password)
+		values(#{email},#{name},#{password})
+	</insert>
+	
+	<select id="findAdminByNameOrEmail" resultType="java.lang.Integer">
+		select count(*) from administrator
+		<if test="null != name and name != ''">
+		 where admin_name=#{name}
+		</if>
+		<if test="null != email and email != ''">
+		where admin_email=#{email}
+		</if>
+	</select>
+	
+	<select id="findAdminByNameAndPwd" resultType="java.lang.Integer">
+		select count(*) from administrator 
+		where admin_name=#{name} and admin_password=#{password}
+	</select>
+</mapper>
+

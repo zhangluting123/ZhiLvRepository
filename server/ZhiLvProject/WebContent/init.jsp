@@ -9,7 +9,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-		
+<!--  
 	<a href="${ctx }/views/add?userId=4&travelsId=9">浏览travels</a>
 	<a href="${ctx }/views/add?userId=4&videoId=10">浏览video</a>
 	<a href="${ctx }/views/add?userId=4&sceneId=1">浏览scene</a>
@@ -35,6 +35,7 @@
 	<a href="${ctx }/note/userlist?userId=5">用户的note</a>
 	<a href="${ctx }/note/topiclist?topicId=2">话题的note</a>
 	<a href="${ctx }/notification/list?userId=6">用户通知</a>
+	-->
 	
 	<!--  
 	<a href="${ctx}/audit/topic/add?title=重庆之行&userId=4">重庆之行</a>

@@ -126,7 +126,7 @@ public class UserService {
 	 * @author: 张璐婷 
 	 * @date: 2021年2月2日 上午11:53:31
 	 */
-	public User findUserByName(String userName){
+	public List<User> findUserByName(String userName){
 		return userMapper.findUserByName(userName);
 	}
 	
@@ -156,8 +156,8 @@ public class UserService {
 	 * @author: 张璐婷 
 	 * @date: 2021年2月2日 下午7:55:28
 	 */
-	public List<User> findForPage(int startIndex, int pageSize){
-		return userMapper.findForPage(startIndex, pageSize);
+	public List<User> findForPage(String userName,int startIndex, int pageSize){
+		return userMapper.findForPage(userName, startIndex, pageSize);
 	}
 	
 	/**
@@ -166,7 +166,7 @@ public class UserService {
 	 * @author: 张璐婷 
 	 * @date: 2021年2月2日 下午7:55:58
 	 */
-	public int findCountUser() {
-		return userMapper.findCountUser();
+	public int findCountUser(String userName) {
+		return userMapper.findCountUser(userName);
 	}
 }

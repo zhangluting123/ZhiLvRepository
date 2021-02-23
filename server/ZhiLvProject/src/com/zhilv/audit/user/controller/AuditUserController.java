@@ -30,7 +30,7 @@ public class AuditUserController {
 	private UserService userService;
 	
 	@ResponseBody
-	@RequestMapping(value="/delete",method=RequestMethod.GET)
+	@RequestMapping(value="/delete",method=RequestMethod.POST)
 	public String delete(@RequestParam("userId")Integer userId) {
 		int i = userService.deleteUserById(userId);
 		if(i > 0) {
@@ -43,12 +43,14 @@ public class AuditUserController {
 	}
 	
 	@RequestMapping(value="/list/{pageNum}",method=RequestMethod.GET)
-	public String list(Model model,@PathVariable("pageNum")int pageNum) {
-		List<User> list = userService.findForPage((pageNum-1)*FinalUtil.PAGE_SIZE, FinalUtil.PAGE_SIZE);
+	public String list(Model model,@RequestParam(value="userName",required=false)String userName, @PathVariable("pageNum")int pageNum) {
+		List<User> list = userService.findForPage(userName,(pageNum-1)*FinalUtil.PAGE_SIZE, FinalUtil.PAGE_SIZE);
 		Page<User> page = new Page<>(pageNum, FinalUtil.PAGE_SIZE);
 		page.setList(list);
-		page.setTotalCount(userService.findCountUser());
+		page.setTotalCount(userService.findCountUser(userName));
 		model.addAttribute("userPage", page);
-		return "index";
+		model.addAttribute("userName",userName);
+		return "user-list";
 	}
+
 }

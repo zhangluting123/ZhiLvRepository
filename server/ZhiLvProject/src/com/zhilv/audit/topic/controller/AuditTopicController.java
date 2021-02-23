@@ -43,7 +43,7 @@ public class AuditTopicController {
 		page.setList(list);
 		page.setTotalCount(auditTopicService.findTopicCount());
 		model.addAttribute("topicPage",page);
-		return "index";
+		return "topic-list";
 	}
 	
 	@ResponseBody
@@ -62,7 +62,8 @@ public class AuditTopicController {
 		}
 	}
 	
-	@RequestMapping(value="update",method=RequestMethod.GET)
+	@ResponseBody
+	@RequestMapping(value="update",method=RequestMethod.POST)
 	public String update(@RequestParam("auditId")Integer auditId,@RequestParam("status")Integer status) {
 		int i = auditTopicService.updateTopicStatus(auditId, status, DateUtil.getCurrentTimes());
 		if(i > 0) {
@@ -75,14 +76,16 @@ public class AuditTopicController {
 				int j = TopicService.addTopic(topic);
 				if(j > 0) {
 					System.out.println("话题发布成功");
+					return "OK";
 				}else {
 					System.out.println("话题发布失败");
+					return "ERROR";
 				}
 			}
-			return "redirect:list/1";
+			return "OK";
 		}else {
 			System.out.println("审核版话题状态更新失败");
-			return "redirect:list/1";
+			return "ERROR";
 		}
 	}
 

@@ -57,7 +57,7 @@ public class NotificationController {
 	public String queryUser(Model model,HttpServletRequest request) {
 		List<User> list = userService.findAllUser();
 		model.addAttribute("userList", list);
-		return "index";
+		return "notification";
 	}
 	
 	@ResponseBody

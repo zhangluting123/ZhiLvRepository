@@ -48,7 +48,7 @@ public class AuditSceneController {
 		page.setList(list);
 		page.setTotalCount(auditSceneService.findSceneCount());
 		model.addAttribute("scenePage",page);
-		return "index";
+		return "scene-list";
 	}
 	
 	@ResponseBody
@@ -123,7 +123,7 @@ public class AuditSceneController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="update",method=RequestMethod.GET)
+	@RequestMapping(value="update",method=RequestMethod.POST)
 	public String update(@RequestParam("auditId")Integer auditId,@RequestParam("status")Integer status) {
 		int i = auditSceneService.updateSceneStatus(auditId, status, DateUtil.getCurrentTimes());
 		if(i > 0) {
