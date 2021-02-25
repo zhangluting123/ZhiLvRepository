@@ -71,13 +71,19 @@
 	<select id="findForPage" resultMap="advdMap">
 		select * from audit_video av
 		left join audit_more_detail m on av.a_id=m.a_id_video
+		<if test="-1 != status">
+			where av.a_status = #{status}
+		</if>
 		order by av.a_id desc
-		limit #{param1},#{param2}
+		limit #{start},#{size}
 	</select>
 	
 	<!-- 查询总数量 -->
 	<select id="findVideoCount" resultType="java.lang.Integer">
 		select count(*) from audit_video
+		<if test="-1 != status">
+			where a_status = #{status}
+		</if>
 	</select>
 	
 </mapper>

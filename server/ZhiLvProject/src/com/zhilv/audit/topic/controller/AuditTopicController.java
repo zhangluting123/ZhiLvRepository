@@ -36,13 +36,14 @@ public class AuditTopicController {
 	@Resource
 	private TopicService TopicService;
 	
-	@RequestMapping(value="/list/{pageNum}",method=RequestMethod.GET)
-	public String list(@PathVariable(value="pageNum",required=true)int pageNum, Model model) {
-		List<AuditTopic> list = auditTopicService.findForPage((pageNum-1)*FinalUtil.PAGE_SIZE,FinalUtil.PAGE_SIZE);
+	@RequestMapping(value="/list/{pageNum}/{status}",method=RequestMethod.GET)
+	public String list(@PathVariable("status")int status, @PathVariable(value="pageNum",required=true)int pageNum, Model model) {
+		List<AuditTopic> list = auditTopicService.findForPage(status,(pageNum-1)*FinalUtil.PAGE_SIZE,FinalUtil.PAGE_SIZE);
 		Page<AuditTopic> page = new Page<>(pageNum,FinalUtil.PAGE_SIZE);
 		page.setList(list);
-		page.setTotalCount(auditTopicService.findTopicCount());
+		page.setTotalCount(auditTopicService.findTopicCount(status));
 		model.addAttribute("topicPage",page);
+		model.addAttribute("status", status);
 		return "topic-list";
 	}
 	

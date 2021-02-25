@@ -55,7 +55,7 @@ public interface AuditTopicMapper {
 	 * @author: 张璐婷 
 	 * @date: 2021年1月19日 下午7:09:52
 	 */
-	public List<AuditTopic> findForPage(int startIndex,int pageSize);
+	public List<AuditTopic> findForPage(@Param("status")int status,@Param("start")int startIndex, @Param("size")int pageSize);
 	
 	/**
 	 * @Title: findTopicCount
@@ -63,6 +63,6 @@ public interface AuditTopicMapper {
 	 * @author: 张璐婷 
 	 * @date: 2021年1月19日 下午7:12:29
 	 */
-	public int findTopicCount();
+	public int findTopicCount(int status);
 	
 }

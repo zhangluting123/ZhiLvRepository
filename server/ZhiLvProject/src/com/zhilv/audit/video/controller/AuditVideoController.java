@@ -45,13 +45,14 @@ public class AuditVideoController {
 	@Resource
 	private VideoService videoService;
 	
-	@RequestMapping(value="/list/{pageNum}",method=RequestMethod.GET)
-	public String list(@PathVariable(value="pageNum",required=true)int pageNum,Model model) {
-		List<AuditVideo> list = auditVideoService.findForPage((pageNum-1)*FinalUtil.PAGE_SIZE, FinalUtil.PAGE_SIZE);
+	@RequestMapping(value="/list/{pageNum}/{status}",method=RequestMethod.GET)
+	public String list(@PathVariable("status")int status, @PathVariable(value="pageNum",required=true)int pageNum,Model model) {
+		List<AuditVideo> list = auditVideoService.findForPage(status,(pageNum-1)*FinalUtil.PAGE_SIZE, FinalUtil.PAGE_SIZE);
 		Page<AuditVideo> page = new Page<>(pageNum,FinalUtil.PAGE_SIZE);
 		page.setList(list);
-		page.setTotalCount(auditVideoService.findVideoCount());
+		page.setTotalCount(auditVideoService.findVideoCount(status));
 		model.addAttribute("videoPage",page);
+		model.addAttribute("status", status);
 		return "video-list";
 	}
 	

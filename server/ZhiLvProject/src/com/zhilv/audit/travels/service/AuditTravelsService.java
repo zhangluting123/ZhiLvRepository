@@ -100,8 +100,8 @@ public class AuditTravelsService {
 	 * @author: 张璐婷 
 	 * @date: 2021年1月19日 下午7:09:52
 	 */
-	public List<AuditTravels> findForPage(int startIndex,int pageSize){
-		return auditTravelsMapper.findForPage(startIndex, pageSize);
+	public List<AuditTravels> findForPage(int status, int startIndex,int pageSize){
+		return auditTravelsMapper.findForPage(status,startIndex, pageSize);
 	}
 	
 	/**
@@ -110,7 +110,7 @@ public class AuditTravelsService {
 	 * @author: 张璐婷 
 	 * @date: 2021年1月19日 下午7:12:29
 	 */
-	public int findTravelsCount() {
-		return auditTravelsMapper.findTravelsCount();
+	public int findTravelsCount(int status) {
+		return auditTravelsMapper.findTravelsCount(status);
 	}
 }

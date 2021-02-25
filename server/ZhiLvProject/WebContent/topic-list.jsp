@@ -28,6 +28,15 @@
     			}
     		});
     	}
+    	function changeSelect(){
+    		var status = $("#select").val();
+   			window.location.href="${ctx}/audit/topic/list/1/"+status;
+   			
+    	}
+		window.onload = function(){
+			var status = ${status}
+			$('#select').val(status);
+		}
     </script>
 </head>
 
@@ -39,9 +48,9 @@
 	<!--header-->
 	
 	<%@ include file = "/lefter.jsp"%>
+	<%@ include file = "/selector.jsp" %>
 	
-
-    <div class="product-status mg-b-30"  style="margin-top:30px">
+    <div class="product-status mg-b-30" >
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -85,10 +94,10 @@
                         <div class="custom-pagination">
 							<ul class="pagination">
 								<li class="page-item"><p style="color:white">共 &nbsp;${topicPage.totalCount }&nbsp;条数据 &nbsp;&nbsp;共 &nbsp;${topicPage.totalPageNum }&nbsp;页  &nbsp; &nbsp; &nbsp;</p></li>
-								<li class="page-item"><a class="page-link" href="${ctx }/audit/topic/list/1/">首页</a></li>
-								<li class="page-item"><a class="page-link" href="${ctx }/audit/topic/list/${topicPage.prePageNum }">上一页</a></li>
-								<li class="page-item"><a class="page-link" href="${ctx }/audit/topic/list/${topicPage.nextPageNum }">下一页</a></li>
-								<li class="page-item"><a class="page-link" href="${ctx }/audit/topic/list/${topicPage.totalPageNum }">末页</a></li>
+								<li class="page-item"><a class="page-link" href="${ctx }/audit/topic/list/1/${status}">首页</a></li>
+								<li class="page-item"><a class="page-link" href="${ctx }/audit/topic/list/${topicPage.prePageNum }/${status}">上一页</a></li>
+								<li class="page-item"><a class="page-link" href="${ctx }/audit/topic/list/${topicPage.nextPageNum }/${status}">下一页</a></li>
+								<li class="page-item"><a class="page-link" href="${ctx }/audit/topic/list/${topicPage.totalPageNum }/${status}">末页</a></li>
 							</ul>
                         </div>
                     </div>

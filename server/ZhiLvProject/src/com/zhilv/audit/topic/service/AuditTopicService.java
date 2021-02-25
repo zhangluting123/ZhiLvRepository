@@ -71,8 +71,8 @@ public class AuditTopicService {
 	 * @author: 张璐婷 
 	 * @date: 2021年1月19日 下午7:09:52
 	 */
-	public List<AuditTopic> findForPage(int startIndex,int pageSize){
-		return auditTopicMapper.findForPage(startIndex, pageSize);
+	public List<AuditTopic> findForPage(int status, int startIndex,int pageSize){
+		return auditTopicMapper.findForPage(status,startIndex, pageSize);
 	}
 	
 	/**
@@ -81,7 +81,7 @@ public class AuditTopicService {
 	 * @author: 张璐婷 
 	 * @date: 2021年1月19日 下午7:12:29
 	 */
-	public int findTopicCount() {
-		return auditTopicMapper.findTopicCount();
+	public int findTopicCount(int status) {
+		return auditTopicMapper.findTopicCount(status);
 	}
 }

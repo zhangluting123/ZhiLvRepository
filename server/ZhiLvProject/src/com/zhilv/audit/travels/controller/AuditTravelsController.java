@@ -46,13 +46,14 @@ public class AuditTravelsController {
 	@Resource
 	private TravelsService travelsService;
 	
-	@RequestMapping(value="/list/{pageNum}",method=RequestMethod.GET)
-	public String list(@PathVariable(value="pageNum",required=true)int pageNum, Model model) {
-		List<AuditTravels> list = auditTravelsService.findForPage((pageNum-1)*FinalUtil.PAGE_SIZE, FinalUtil.PAGE_SIZE);
+	@RequestMapping(value="/list/{pageNum}/{status}",method=RequestMethod.GET)
+	public String list(@PathVariable("status")int status,@PathVariable(value="pageNum",required=true)int pageNum, Model model) {
+		List<AuditTravels> list = auditTravelsService.findForPage(status, (pageNum-1)*FinalUtil.PAGE_SIZE, FinalUtil.PAGE_SIZE);
 		Page<AuditTravels> page = new Page<>(pageNum,FinalUtil.PAGE_SIZE);
 		page.setList(list);
-		page.setTotalCount(auditTravelsService.findTravelsCount());
+		page.setTotalCount(auditTravelsService.findTravelsCount(status));
 		model.addAttribute("travelsPage",page);
+		model.addAttribute("status", status);
 		return "travels-list";
 	}
 	

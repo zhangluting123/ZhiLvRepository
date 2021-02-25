@@ -81,7 +81,7 @@ public interface AuditTravelsMapper {
 	 * @author: 张璐婷 
 	 * @date: 2021年1月19日 下午7:09:52
 	 */
-	public List<AuditTravels> findForPage(int startIndex,int pageSize);
+	public List<AuditTravels> findForPage(@Param("status")int status,@Param("start")int startIndex, @Param("size")int pageSize);
 	
 	/**
 	 * @Title: findTopicCount
@@ -89,6 +89,6 @@ public interface AuditTravelsMapper {
 	 * @author: 张璐婷 
 	 * @date: 2021年1月19日 下午7:12:29
 	 */
-	public int findTravelsCount();
+	public int findTravelsCount(int status);
 
 }

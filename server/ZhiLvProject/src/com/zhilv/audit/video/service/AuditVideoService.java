@@ -91,8 +91,8 @@ public class AuditVideoService {
 	 * @author: 张璐婷 
 	 * @date: 2021年1月19日 下午7:09:52
 	 */
-	public List<AuditVideo> findForPage(int startIndex,int pageSize){
-		return auditVideoMapper.findForPage(startIndex, pageSize);
+	public List<AuditVideo> findForPage(int status,int startIndex,int pageSize){
+		return auditVideoMapper.findForPage(status,startIndex, pageSize);
 	}
 	
 	/**
@@ -101,8 +101,8 @@ public class AuditVideoService {
 	 * @author: 张璐婷 
 	 * @date: 2021年1月19日 下午7:12:29
 	 */
-	public int findVideoCount() {
-		return auditVideoMapper.findVideoCount();
+	public int findVideoCount(int status) {
+		return auditVideoMapper.findVideoCount(status);
 	}
 
 }

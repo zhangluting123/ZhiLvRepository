@@ -96,16 +96,22 @@
 		where au.a_id in(
 		  select s.a_id from(
 		    select au2.a_id from audit_travels au2 
-		    group by au2.a_id
+		    <if test="-1 != status">
+				where au2.a_status = #{status}
+			</if>
 		    order by au2.a_id desc
-		    limit #{param1},#{param2}
+		    limit #{start},#{size}
 		  )as s
 		)
+		
 	</select>
 	
 	<!-- 查询总数量 -->
 	<select id="findTravelsCount" resultType="java.lang.Integer">
 		select count(*) from audit_travels 
+		<if test="-1 != status">
+			where a_status = #{status}
+		</if>
 	</select>
 	
 </mapper>

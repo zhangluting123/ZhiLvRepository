@@ -36,9 +36,9 @@
 								</a>
                             <ul class="submenu-angle" aria-expanded="true">
                                 <li><a title="Dashboard v.1" href="${ctx }/audit/scene/list/1"><span class="mini-sub-pro">景点管理</span></a></li>
-                                <li><a title="Dashboard v.2" href="${ctx }/audit/topic/list/1"><span class="mini-sub-pro">话题管理</span></a></li>
-                                <li><a title="Dashboard v.3" href="${ctx }/audit/travels/list/1"><span class="mini-sub-pro">游记管理</span></a></li>
-                                <li><a title="Product List" href="${ctx }/audit/video/list/1"><span class="mini-sub-pro">视频管理</span></a></li>
+                                <li><a title="Dashboard v.2" href="${ctx }/audit/topic/list/1/0"><span class="mini-sub-pro">话题管理</span></a></li>
+                                <li><a title="Dashboard v.3" href="${ctx }/audit/travels/list/1/0"><span class="mini-sub-pro">游记管理</span></a></li>
+                                <li><a title="Product List" href="${ctx }/audit/video/list/1/0"><span class="mini-sub-pro">视频管理</span></a></li>
                      
                             </ul>
                         </li>
@@ -57,7 +57,7 @@
                         <li id="removable">
                             <a class="has-arrow" href="#" aria-expanded="false"><i class="icon nalika-new-file icon-wrap"></i> <span class="mini-click-non">问题反馈</span></a>
                             <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="Login" href="${ctx }//problem/list/1"><span class="mini-sub-pro">反馈管理</span></a></li>
+                                <li><a title="Login" href="${ctx }/problem/list/1"><span class="mini-sub-pro">反馈管理</span></a></li>
                             </ul>
                         </li>
                     </ul>
