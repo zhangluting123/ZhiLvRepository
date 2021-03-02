@@ -3,7 +3,6 @@
 <mapper namespace="com.zhilv.audit.topic.dao.AuditTopicMapper">
 	<resultMap type="com.zhilv.entity.AuditTopic" id="adtpMap">
 		<id property="auditId" column="a_id"/>
-		<result property="topicId" column="a_topic_id"/>
 		<result property="title" column="a_topic_title"/>
 		<result property="userId" column="a_user_id"/>
 		<result property="time" column="a_last_time"/>
@@ -12,8 +11,8 @@
 	
 	<!--  添加审核版话题 -->
 	<insert id="addAuditTopic">
-		insert into audit_topic(a_topic_id,a_topic_title,a_user_id)
-		values(#{topic.topicId},#{topic.title},#{topic.userId})
+		insert into audit_topic(a_topic_title,a_user_id)
+		values(#{topic.title},#{topic.userId})
 	</insert>
 	
 	<!-- 更新审核状态 -->

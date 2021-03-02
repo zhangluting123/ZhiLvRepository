@@ -10,7 +10,6 @@ import java.util.Date;
  */
 public class AuditTopic {
 	private Integer auditId;
-	private Integer topicId;
 	private String title;
 	private Integer userId;
 	private Integer status;
@@ -20,12 +19,6 @@ public class AuditTopic {
 	}
 	public void setAuditId(Integer auditId) {
 		this.auditId = auditId;
-	}
-	public Integer getTopicId() {
-		return topicId;
-	}
-	public void setTopicId(Integer topicId) {
-		this.topicId = topicId;
 	}
 	public String getTitle() {
 		return title;
@@ -51,10 +44,6 @@ public class AuditTopic {
 	public void setTime(Date time) {
 		this.time = time;
 	}
-	@Override
-	public String toString() {
-		return "AuditTopic [auditId=" + auditId + ", topicId=" + topicId + ", title=" + title + ", userId=" + userId
-				+ ", status=" + status + ", time=" + time + "]";
-	}
+
 	
 }
