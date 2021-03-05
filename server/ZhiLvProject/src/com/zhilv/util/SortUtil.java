@@ -30,11 +30,16 @@ public class SortUtil {
             public int compare(T o1, T o2) {
                 try {
                     Field field1 = o1.getClass().getDeclaredField(property);
-                    field1.setAccessible(true);
-                    Long long1 = ((Date)field1.get(o1)).getTime();
-
                     Field field2 = o2.getClass().getDeclaredField(property);
+                    field1.setAccessible(true);
                     field2.setAccessible(true);
+                    if(field1.get(o1) == null) {
+                    	return (field2.get(o2) == null)? -1 :0; 
+                    }
+                    if(field2.get(o2) == null){
+                    	 return 0; 
+                    } 
+                    Long long1 = ((Date)field1.get(o1)).getTime();
                     Long long2 = ((Date)field2.get(o2)).getTime();
 
                     //½µÐò

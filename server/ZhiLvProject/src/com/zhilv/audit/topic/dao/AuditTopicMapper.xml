@@ -49,6 +49,16 @@
 			where a_status = #{status}
 		</if>
 	</select>
+	
+	<resultMap type="com.zhilv.entity.AuditMessage" id="mgMap">
+		<id property="auditId" column="a_id"/>
+		<result property="title" column="a_topic_title"/>
+		<result property="lastTime" column="a_last_time"/>
+		<result property="status" column="a_status"/>
+	</resultMap>
+	<select id="findTopicByUserId" resultMap="mgMap">
+		select * from audit_topic where a_user_id=#{userId}
+	</select>
 </mapper>
 
 

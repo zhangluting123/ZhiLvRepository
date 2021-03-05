@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.zhilv.audit.scene.dao.AuditSceneMapper;
+import com.zhilv.entity.AuditMessage;
 import com.zhilv.entity.AuditScene;
 
 /**   
@@ -70,6 +71,16 @@ public class AuditSceneService {
 	 */
 	public AuditScene findAuditSceneById(Integer auditId) {
 		return auditSceneMapper.findAuditSceneById(auditId);
+	}
+	
+	/**
+	 * @Title: findSceneByUserId
+	 * @Description: 根据用户id查询景点编辑信息
+	 * @author: 张璐婷
+	 * @date: 2021年3月4日 下午9:40:18
+	 */
+	public List<AuditMessage> findSceneByUserId(Integer userId) {
+		return auditSceneMapper.findSceneByUserId(userId);
 	}
 
 }

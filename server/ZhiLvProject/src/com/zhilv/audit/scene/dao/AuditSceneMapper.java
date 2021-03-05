@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.zhilv.entity.AuditMessage;
 import com.zhilv.entity.AuditScene;
 
 /**   
@@ -54,4 +55,12 @@ public interface AuditSceneMapper {
 	 * @date: 2021年2月8日 上午10:29:56
 	 */
 	public AuditScene findAuditSceneById(Integer auditId);
+	
+	/**
+	 * @Title: findSceneByUserId
+	 * @Description: 根据用户id查询景点编辑信息
+	 * @author: 张璐婷
+	 * @date: 2021年3月4日 下午9:40:18
+	 */
+	public List<AuditMessage> findSceneByUserId(Integer userId);
 }

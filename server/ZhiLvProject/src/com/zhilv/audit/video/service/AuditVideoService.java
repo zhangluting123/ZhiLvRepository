@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.zhilv.audit.video.dao.AuditVideoMapper;
+import com.zhilv.entity.AuditMessage;
 import com.zhilv.entity.AuditVideo;
 import com.zhilv.entity.MoreDetail;
 
@@ -105,4 +106,13 @@ public class AuditVideoService {
 		return auditVideoMapper.findVideoCount(status);
 	}
 
+	/**
+	 * @Title: findVideoByUserId
+	 * @Description: 
+	 * @author: 张璐婷
+	 * @date: 2021年3月4日 下午9:50:44
+	 */
+	public List<AuditMessage> findVideoByUserId(Integer userId){
+		return auditVideoMapper.findVideoByUserId(userId);
+	}
 }

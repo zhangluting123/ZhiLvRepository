@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.zhilv.entity.AuditMessage;
 import com.zhilv.entity.AuditTopic;
 import com.zhilv.entity.Topic;
 
@@ -64,5 +65,13 @@ public interface AuditTopicMapper {
 	 * @date: 2021年1月19日 下午7:12:29
 	 */
 	public int findTopicCount(int status);
+	
+	/**
+	 * @Title: findTopicByUserId
+	 * @Description: 查询某用户创建话题
+	 * @author: 张璐婷
+	 * @date: 2021年3月4日 下午9:35:26
+	 */
+	public List<AuditMessage> findTopicByUserId(Integer userId);
 	
 }

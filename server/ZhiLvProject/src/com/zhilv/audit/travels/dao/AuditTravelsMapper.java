@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-
+import com.zhilv.entity.AuditMessage;
 import com.zhilv.entity.AuditTravels;
 import com.zhilv.entity.Img;
 import com.zhilv.entity.MoreDetail;
@@ -90,5 +90,13 @@ public interface AuditTravelsMapper {
 	 * @date: 2021年1月19日 下午7:12:29
 	 */
 	public int findTravelsCount(int status);
+	
+	/**
+	 * @Title: findTravelsByUserId
+	 * @Description: 
+	 * @author: 张璐婷
+	 * @date: 2021年3月4日 下午9:48:31
+	 */
+	public List<AuditMessage> findTravelsByUserId(Integer userId);
 
 }

@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.zhilv.audit.topic.dao.AuditTopicMapper;
+import com.zhilv.entity.AuditMessage;
 import com.zhilv.entity.AuditTopic;
 import com.zhilv.entity.Topic;
 
@@ -83,5 +84,15 @@ public class AuditTopicService {
 	 */
 	public int findTopicCount(int status) {
 		return auditTopicMapper.findTopicCount(status);
+	}
+	
+	/**
+	 * @Title: findTopicByUserId
+	 * @Description: 查询某用户创建话题
+	 * @author: 张璐婷
+	 * @date: 2021年3月4日 下午9:35:26
+	 */
+	public List<AuditMessage> findTopicByUserId(Integer userId) {
+		return auditTopicMapper.findTopicByUserId(userId);
 	}
 }

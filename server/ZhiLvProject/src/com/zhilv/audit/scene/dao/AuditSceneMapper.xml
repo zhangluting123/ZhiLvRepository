@@ -53,4 +53,17 @@
 	<select id="findAuditSceneById" resultMap="sceneMap">
 		select * from audit_scene where a_id=#{auditId}
 	</select>
+	
+	<resultMap type="com.zhilv.entity.AuditMessage" id="mgMap">
+		<id property="auditId" column="a_id"/>
+		<result property="title" column="a_scene_title"/>
+		<result property="content" column="a_scene_content"/>
+		<result property="address" column="a_scene_traffic"/>
+		<result property="uploadTime" column="a_scene_update_time"/>
+		<result property="lastTime" column="a_last_time"/>
+		<result property="status" column="a_status"/>
+	</resultMap>
+	<select id="findSceneByUserId" resultMap="mgMap">
+		select * from audit_scene where update_user_id=#{userId}
+	</select>
 </mapper>

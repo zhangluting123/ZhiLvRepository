@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.zhilv.audit.travels.dao.AuditTravelsMapper;
+import com.zhilv.entity.AuditMessage;
 import com.zhilv.entity.AuditTravels;
 import com.zhilv.entity.Img;
 import com.zhilv.entity.MoreDetail;
@@ -112,5 +113,15 @@ public class AuditTravelsService {
 	 */
 	public int findTravelsCount(int status) {
 		return auditTravelsMapper.findTravelsCount(status);
+	}
+	
+	/**
+	 * @Title: findTravelsByUserId
+	 * @Description: 
+	 * @author: 张璐婷
+	 * @date: 2021年3月4日 下午9:48:31
+	 */
+	public List<AuditMessage> findTravelsByUserId(Integer userId){
+		return auditTravelsMapper.findTravelsByUserId(userId);
 	}
 }

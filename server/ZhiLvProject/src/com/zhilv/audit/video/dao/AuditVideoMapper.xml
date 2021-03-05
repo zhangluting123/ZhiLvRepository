@@ -86,4 +86,16 @@
 		</if>
 	</select>
 	
+	<resultMap type="com.zhilv.entity.AuditMessage" id="mgMap">
+		<id property="auditId" column="a_id"/>
+		<result property="title" column="a_video_title"/>
+		<result property="content" column="a_video_content"/>
+		<result property="address" column="a_video_location"/>
+		<result property="uploadTime" column="a_upload_time"/>
+		<result property="lastTime" column="a_last_time"/>
+		<result property="status" column="a_status"/>
+	</resultMap>
+	<select id="findVideoByUserId" resultMap="mgMap">
+		select * from audit_video where a_user_id=#{userId}
+	</select>
 </mapper>

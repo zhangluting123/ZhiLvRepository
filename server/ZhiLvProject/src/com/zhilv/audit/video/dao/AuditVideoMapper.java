@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.zhilv.entity.AuditMessage;
 import com.zhilv.entity.AuditVideo;
 import com.zhilv.entity.MoreDetail;
 
@@ -81,4 +82,12 @@ public interface AuditVideoMapper {
 	 * @date: 2021年1月19日 下午7:12:29
 	 */
 	public int findVideoCount(int status);
+	
+	/**
+	 * @Title: findVideoByUserId
+	 * @Description: 
+	 * @author: 张璐婷
+	 * @date: 2021年3月4日 下午9:50:44
+	 */
+	public List<AuditMessage> findVideoByUserId(Integer userId);
 }
