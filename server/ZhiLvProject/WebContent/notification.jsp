@@ -82,7 +82,7 @@ $(document).ready(function(){
 
 	<!--header-->
 	<%@ include file = "/lefter.jsp"%>
-    <div class="product-status mg-b-30" style="margin-top:40px">
+    <div class="product-status mg-b-30" style="margin-top:80px">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

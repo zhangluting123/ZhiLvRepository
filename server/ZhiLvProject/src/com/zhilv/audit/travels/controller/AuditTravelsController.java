@@ -204,7 +204,10 @@ public class AuditTravelsController {
 					int j = travelsService.addTravelsDetail(moreDetail);
 					travels.setDetail(moreDetail);
 					j += travelsService.addTravels(travels);
-					if(null != auditTravels.getImgList().get(0).getImgId()) {
+					for(Img img: auditTravels.getImgList()) {
+						System.out.println("-----------"+img.getImgId());
+					}
+					if(0 != auditTravels.getImgList().size()) {
 						for(Img img:auditTravels.getImgList()) {
 							img.setTravelsId(travels.getTravelsId());
 						}

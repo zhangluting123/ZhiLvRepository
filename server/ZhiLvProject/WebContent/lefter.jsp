@@ -8,8 +8,8 @@
     <div class="left-sidebar-pro">
         <nav id="sidebar" class="">
             <div class="sidebar-header">
-                <a href="#"><img class="main-logo" src="${ctx }/img/logo/logo.png" alt="" /></a>
-                <strong><img src="${ctx }/img/logo/logosn.png" alt="" /></strong>
+                <a href="#"><img class="main-logo" src="${ctx }/img/logo/logo.png" alt="" style="width:160px;height:50px"/></a>
+               <!--  <strong><img src="${ctx }/img/logo/logosn.png" alt="" /></strong>-->
             </div>
 			<div class="nalika-profile">
 				<div class="profile-dtl">
@@ -71,12 +71,14 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="logo-pro">
+                    <!-- 
                         <a href="#"><img class="main-logo" src="${ctx }/img/logo/logo.png" alt="" /></a>
+                         -->
                     </div>
                 </div>
             </div>
         </div>
-        <div class="header-advance-area">
+        <div class="header-advance-area" style="margin-top:50px;">
             <div class="header-top-area">
                 <div class="container-fluid">
                     <div class="row">

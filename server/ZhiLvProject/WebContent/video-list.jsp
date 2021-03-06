@@ -39,6 +39,22 @@
 			$('#select').val(status);
 		}
     </script>
+    <style type="text/css">
+    	.div1{
+    		width:40px;
+    		text-align:center
+    	}
+    	.div2{
+    		width:80px;
+    		text-align:center
+    	}
+    	.div4{
+    		width:180px;
+    		height:150px;
+    		text-align:center;
+    		overflow-y:auto;
+    	}
+    </style>
 </head>
 
 <body>
@@ -52,28 +68,23 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="product-status-wrap">
                         <h4>视频管理</h4>
- 
-                        <table>
+ 						
+                        <table style="text-align:center;align:center">
                             <tr>
-                            	<th>序号</th>
-                                <th>链接</th>
-                                <th>标题</th>
-                                <th>状态</th>
-                                <th>话题</th>
-                                <th>内容</th>
-                                <th>目的地</th>
-                                <th>交通</th>
-                                <th>日期</th>
-                                <th>天数</th>
-                                <th>任务</th>
-                                <th>花费</th>
-                                <th>更新时间</th>
-                                <th>设置</th>
+                            	<th><div class="div1">序号</div></th>
+                                <th><div class="div1">链接</div></th>
+                                <th><div class="div1">标题</div></th>
+                                <th><div class="div2">状态</div></th>
+                                <th><div class="div1">话题</div></th>
+                                <th><div class="div2">内容</div></th>
+                                <th><div class="div2">更多</div></th>
+                                <th><div class="div2">更新时间</div></th>
+                                <th><div class="div1">设置</div></th>
                             </tr>
                             <c:forEach items="${videoPage.list}" var="video" varStatus="st">
                             <tr>
                             	<td>${st.count+(videoPage.currentPageNum-1)*3 }</td>
-                            	<td><a href="${ctx}/${video.path }" target="_blank">视频链接</a><br></td>
+                            	<td><a href="${ctx}/${video.path }" target="_blank">视频</a><br></td>
                                 <td>${video.title }</td>
                                 <td>
                                 <c:if test="${video.status == 0}">
@@ -88,13 +99,16 @@
                                 	
                                 </td>
                                 <td style="color:green;"># ${video.topic.title } #</td>
-                                <td>${video.content  }</td>
-                                <td>${video.detail.destination }</td>
-                                <td>${video.detail.traffic}</td>
-                                <td><fmt:formatDate type="date" value="${video.detail.beginDate}"/></td>
-                                <td>${video.detail.days}</td>
-                                <td>${video.detail.people}</td>
-                                <td>${video.detail.money}</td>
+                                <td><div class="div4">${video.content  }</div></td>
+                                <td><div class="div4">
+	                                <p>目的地：${video.detail.destination }</p>
+	                                <p>交通：${video.detail.traffic}</p>
+	                                <p>开始时间：<fmt:formatDate type="date" value="${video.detail.beginDate}"/></p>
+	                                <p>天数：${video.detail.days}</p>
+	                                <p>人物：${video.detail.people}</p>
+	                                <p>花费：${video.detail.money}</p>
+	                                </div>
+                                </td>
                                 <td><fmt:formatDate type="both" value="${video.lastTime }"/></td>
                                 <td>
                                     <div >
